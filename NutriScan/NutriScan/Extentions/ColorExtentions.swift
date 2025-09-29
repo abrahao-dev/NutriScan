@@ -1,11 +1,12 @@
 //
-//  ColorExtention.swift
+//  ColorExtentions.swift
 //  NutriScan
 //
 //  Created by Elena Diniz on 9/24/25.
 //
 
 import SwiftUI
+import UIKit
 
 extension Color {
     //Primary colors pallete
