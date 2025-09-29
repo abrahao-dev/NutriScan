@@ -1,5 +1,5 @@
 //
-//  CustomTabBar.swift
+//  CustomTabBarView.swift
 //  NutriScan
 //
 //  Created by Elena Diniz on 9/25/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomTabBar: View {
+struct CustomTabBarView: View {
     @Binding var selectedTab: Tabs
     
     var body: some View {
@@ -17,9 +17,9 @@ struct CustomTabBar: View {
                 selectedTab = .home
             } label: {
                 if selectedTab == .home {
-                    TabBarButton(buttonText: "Home", imageName: "house.fill")
+                    TabBarButtonView(buttonText: "Home", imageName: "house.fill")
                 } else {
-                    TabBarButton(buttonText: "Home", imageName: "house")
+                    TabBarButtonView(buttonText: "Home", imageName: "house")
                 }
             }
             .tint(Color.primary1)
@@ -42,7 +42,7 @@ struct CustomTabBar: View {
                         }
                         .frame(width: geo.size.width, height: geo.size.height)
                     }
-                    TabBarButton(buttonText: "Pesquisa", imageName: "magnifyingglass")
+                    TabBarButtonView(buttonText: "Pesquisa", imageName: "magnifyingglass")
                 }
             }
             .tint(Color.primary1)
@@ -68,9 +68,9 @@ struct CustomTabBar: View {
                 selectedTab = .favorites
             } label: {
                 if selectedTab == .favorites {
-                    TabBarButton(buttonText: "Favoritos", imageName: "heart.fill")
+                    TabBarButtonView(buttonText: "Favoritos", imageName: "heart.fill")
                 } else {
-                    TabBarButton(buttonText: "Favoritos", imageName: "heart")
+                    TabBarButtonView(buttonText: "Favoritos", imageName: "heart")
                 }
             }
             .tint(Color.primary1)
@@ -80,9 +80,9 @@ struct CustomTabBar: View {
                 selectedTab = .profile
             } label: {
                 if selectedTab == .profile {
-                    TabBarButton(buttonText: "Perfil", imageName: "person.fill")
+                    TabBarButtonView(buttonText: "Perfil", imageName: "person.fill")
                 } else {
-                    TabBarButton(buttonText: "Perfil", imageName: "person")
+                    TabBarButtonView(buttonText: "Perfil", imageName: "person")
                 }
             }
             .tint(Color.primary1)
@@ -92,5 +92,5 @@ struct CustomTabBar: View {
 }
 
 #Preview {
-    CustomTabBar(selectedTab: .constant(.home))
+    CustomTabBarView(selectedTab: .constant(.home))
 }

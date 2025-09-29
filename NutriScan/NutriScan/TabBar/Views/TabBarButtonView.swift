@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TabBarButton: View {
+struct TabBarButtonView: View {
     
     var buttonText: String
     var imageName: String
@@ -29,5 +29,5 @@ struct TabBarButton: View {
 }
 
 #Preview {
-    TabBarButton(buttonText: "Home", imageName: "house.fill")
+    TabBarButtonView(buttonText: "Home", imageName: "house.fill")
 }
