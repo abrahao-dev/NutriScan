@@ -9,6 +9,8 @@ import SwiftUI
 
 struct OnboardingView: View {
     
+    @StateObject private var viewModel = OnboardingViewModel()
+    
     var body: some View {
         VStack {
             Text("Nutri Scan")
@@ -16,10 +18,10 @@ struct OnboardingView: View {
                 .foregroundStyle(.primaryColor1)
                 .padding(.top, 37)
             
-            OnboardingCarrouselView()
+            OnboardingCarrouselView(items: viewModel.items)
             
             Button("Começar") {
-                
+                viewModel.didTapStartButton()
             }
             .font(.regular24)
             .padding(.top, 20)

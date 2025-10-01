@@ -10,9 +10,7 @@ import SwiftUI
 struct OnboardingCarrouselView: View {
     
     @State private var currentPage = 0
-    let items = [OnboardingCarrouselItem(image: "onboarding1", title: "Coma saudável", subtitle: "Manter uma boa saúde deve ser o foco principal de todos."),
-                 OnboardingCarrouselItem(image: "onboarding2", title: "Pesquise produtos", subtitle: "Pesquise e compare produtos antes de comprá-los."),
-                 OnboardingCarrouselItem(image: "onboarding3", title: "Salve seus favoritos", subtitle: "Salve seus produtos favoritos depois de scanea-los")]
+    let items: [OnboardingCarrouselItem]
     
     var body: some View {
         TabView(selection: $currentPage) {
@@ -37,5 +35,8 @@ struct OnboardingCarrouselView: View {
 }
 
 #Preview {
-    OnboardingCarrouselView()
+    OnboardingCarrouselView(items: [.init(image: "onboarding1",
+                                          title: "Coma saudável",
+                                          subtitle: "Manter uma boa saúde deve ser o foco principal de todos.")
+    ])
 }
