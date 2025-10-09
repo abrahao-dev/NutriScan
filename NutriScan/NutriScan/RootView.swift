@@ -13,13 +13,33 @@ struct RootView: View {
     
     var body: some View {
         VStack {
-            Text("NutriScan")
-                .padding()
-            
-            Spacer()
-            
+            switch selectedTab {
+            case .home:
+                Text("Home")
+                    .padding()
+                Spacer()
+//                HomeRootView()
+            case .search:
+                Text("Busca")
+                    .padding()
+                Spacer()
+//                SearchRootView()
+            case .scan:
+                Text("Scaner")
+                    .padding()
+                Spacer()
+//                ScanRootView()
+            case .favorites:
+                Text("Favoritos")
+                    .padding()
+                FavoriteRootView()
+            case .profile:
+                Text("Perfil")
+                    .padding()
+                Spacer()
+//                ProfileRootView()
+            }
             CustomTabBarView(selectedTab: $selectedTab)
-            
         }
     }
 }

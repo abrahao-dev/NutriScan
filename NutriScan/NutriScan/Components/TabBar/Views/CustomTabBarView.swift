@@ -38,7 +38,7 @@ struct CustomTabBarView: View {
                                 .font(.system(size: 20))
                                 .frame(width: 24, height: 24)
                             Text("Pesquisa")
-                                .font(.caption)
+                                .font(.custom("Signika", size: 14))
                         }
                         .frame(width: geo.size.width, height: geo.size.height)
                     }
