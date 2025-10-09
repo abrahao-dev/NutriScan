@@ -12,7 +12,11 @@ class FavoriteViewController: UIViewController {
     
     private var informationData: [FoodInformation] = [
         .init(name: "Banana Nanica", brand: "Não descrito", imageUrl: URL(string: "https://placehold.co/60")!, score: .scoreB),
-        .init(name: "Banana Maça", brand: "Não descrito", imageUrl: URL(string: "https://placehold.co/60")!, score: .scoreA)
+        .init(name: "Banana Maça", brand: "Não descrito", imageUrl: URL(string: "https://placehold.co/60")!, score: .scoreA),
+        .init(name: "Leite Integral", brand: "Parmalat", imageUrl: URL(string: "https://placehold.co/60")!, score: .scoreC),
+        .init(name: "Leite Condensado Integral", brand: "Italac", imageUrl: URL(string: "https://placehold.co/60")!, score: .scoreD),
+        .init(name: "Biscoite Recheado", brand: "Trakinas", imageUrl: URL(string: "https://placehold.co/60")!, score: .scoreE),
+        .init(name: "Bolo reacheado - Ana Maria", brand: "Panco", imageUrl: URL(string: "https://placehold.co/60")!, score: .scoreD)
     ]
     
     private lazy var tableView: UITableView = {
@@ -20,6 +24,7 @@ class FavoriteViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
         tableView.register(
             FavoriteTableViewCell.self,
             forCellReuseIdentifier: FavoriteTableViewCell.reuseIdentifier
@@ -71,6 +76,9 @@ extension FavoriteViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         print("Célula selecionada na linha \(indexPath.row)")
+        let detailController: some View = OnboardingView()
+        let swiftUIViewController = UIHostingController(rootView: detailController)
+        present(swiftUIViewController, animated: true)
     }
 }
 
