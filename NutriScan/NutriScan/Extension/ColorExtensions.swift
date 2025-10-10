@@ -35,3 +35,31 @@ extension Color {
     static let icon3 = Color("iconBackgroundColor")
     
 }
+
+extension UIColor {
+    //Primary colors pallete
+    static let primary1 = UIColor(named: "primaryColor1")
+    static let primary2 = UIColor(named: "primaryColor2")
+    static let primary3 = UIColor(named: "#primaryColor3")
+    
+    //Secondary color pallete
+    static let secondary1 = UIColor(named: "secondaryColor1")
+    static let secondary2 = UIColor(named: "secondaryColor2")
+    static let secondary3 = UIColor(named: "secondaryColor3")
+    
+    //Neutrals color pallete
+    static let neutral1 = UIColor(named: "neutralColor1")
+    static let neutral2 = UIColor(named: "neutralColor2")
+    static let neutral3 = UIColor(named: "neutralColor3")
+    
+    //Alert color pallete
+    static let alert1 = UIColor(named: "alertColor1")
+    static let alert2 = UIColor(named: "alertColor2")
+    static let alert3 = UIColor(named: "alertColor3")
+    
+    //Icon color pallete
+    static let icon1 = UIColor(named: "iconColor1")
+    static let icon2 = UIColor(named: "iconColor2")
+    static let icon3 = UIColor(named: "iconBackgroundColor")
+    
+}
