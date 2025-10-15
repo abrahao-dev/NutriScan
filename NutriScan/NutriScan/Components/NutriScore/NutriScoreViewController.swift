@@ -8,25 +8,16 @@
 import Foundation
 import SwiftUI
 
-// MARK: enum Score
-enum NutriScore: String, CaseIterable {
-    case a = "A"
-    case b = "B"
-    case c = "C"
-    case d = "D"
-    case e = "E"
-}
-
 // MARK: - View
 struct NutriScoreView: View {
-    let selectedScore: NutriScore
+    let selectedScore: NumberScore
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("NUTRI-SCORE")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.gray)
             HStack(spacing: 0) {
-                ForEach(NutriScore.allCases, id: \.self) { score in
+                ForEach(NumberScore.allCases, id: \.self) { score in
                     scoreSegment(for: score)
                 }
             }
@@ -37,11 +28,11 @@ struct NutriScoreView: View {
     }
 
     @ViewBuilder
-    private func scoreSegment(for score: NutriScore) -> some View {
+    private func scoreSegment(for score: NumberScore) -> some View {
         ZStack {
             // muda a cor de fundo
             color(for: score)
-            Text(score.rawValue) // pega o valor do score
+            Text(score.label) // pega o valor do score
                 .if(score == selectedScore) { view in
                     view
                         .font(.system(size: 40, weight: .heavy))
@@ -58,17 +49,17 @@ struct NutriScoreView: View {
     }
 
     // MARK: - Cores Dinamicas
-    private func color(for score: NutriScore) -> Color {
+    private func color(for score: NumberScore) -> Color {
         switch score {
-        case .a:
+        case .scoreA:
             return Color(red: 0.12, green: 0.49, blue: 0.22)
-        case .b:
+        case .scoreB:
             return Color(red: 0.53, green: 0.73, blue: 0.24)
-        case .c:
+        case .scoreC:
             return Color(red: 0.99, green: 0.80, blue: 0.25)
-        case .d:
+        case .scoreD:
             return Color(red: 0.95, green: 0.51, blue: 0.21)
-        case .e:
+        case .scoreE:
             return Color(red: 0.91, green: 0.29, blue: 0.22)
         }
     }
@@ -89,14 +80,14 @@ extension View {
 
 // MARK: - Preview
 #Preview {
-    NutriScoreView(selectedScore: .a)
+    NutriScoreView(selectedScore: .scoreA)
         .padding()
-    NutriScoreView(selectedScore: .b)
+    NutriScoreView(selectedScore: .scoreB)
         .padding()
-    NutriScoreView(selectedScore: .c)
+    NutriScoreView(selectedScore: .scoreC)
         .padding()
-    NutriScoreView(selectedScore: .d)
+    NutriScoreView(selectedScore: .scoreD)
         .padding()
-    NutriScoreView(selectedScore: .e)
+    NutriScoreView(selectedScore: .scoreE)
         .padding()
 }

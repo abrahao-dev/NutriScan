@@ -53,7 +53,7 @@ struct CustomTabBarView: View {
             } label: {
                 GeometryReader { geo in
                     VStack  {
-                        ScanComponentView(width: 30, height: 30)
+                        IconCircleView(icon: .asset(name: "Scan"), backgroundColor: .primary1, size: 30)
                         Rectangle()
                             .foregroundColor(.clear)
                             .frame(width: 70, height: 30)
