@@ -40,7 +40,7 @@ struct SettingsMenuItem: View {
             Image(systemName: "chevron.right")
                 .foregroundColor(.gray)
         }
-        .padding(.vertical, 12)
+        .padding(.vertical, 5)
         .padding(.horizontal, 8)
     }
 }

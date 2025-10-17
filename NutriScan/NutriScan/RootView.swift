@@ -39,7 +39,7 @@ struct RootView: View {
                     Text("Perfil")
                         .padding()
                     Spacer()
-    //                ProfileRootView()
+                    ProfileViewControllerWrapper()
                 }
                 CustomTabBarView(selectedTab: $selectedTab)
             }
