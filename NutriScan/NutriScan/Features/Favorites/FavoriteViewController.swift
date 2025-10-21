@@ -34,7 +34,6 @@ class FavoriteViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Favoritos"
         setupView()
     }
     
@@ -75,10 +74,13 @@ extension FavoriteViewController: UITableViewDataSource {
 extension FavoriteViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        print("Célula selecionada na linha \(indexPath.row)")
-        let detailController: some View = OnboardingView()
-        let swiftUIViewController = UIHostingController(rootView: detailController)
-        present(swiftUIViewController, animated: true)
+        let detailVC = DetailsViewController(title: informationData[indexPath.row].name, brand: informationData[indexPath.row].brand, imageURL: informationData[indexPath.row].imageUrl, score: informationData[indexPath.row].score, infoItem: [
+            .init(icon: .system(name: .heart), foregroundColor: .icon2,  title: "Bom para o coração", subtitle: "Baixo em gordura: 2,80g", backgroundColor: .iconBackground),
+            .init(icon: .asset(name: .muscleArm), foregroundColor: nil, title: "Construção de Ossos e Músculos", subtitle: "Alto em proteínas: 14g", backgroundColor: .secondary3),
+            .init(icon: .asset(name: .intestine), foregroundColor: nil, title: "Auxilia no funcionamento do intestino", subtitle: "Rico em fibras: 10g", backgroundColor: .secondary1),
+            .init(icon: .system(name: .checkmark), foregroundColor: .icon1, title: "Lactose", subtitle: "Zero em lactose", backgroundColor: .primary1)
+        ])
+        present(detailVC, animated: true)
     }
 }
 

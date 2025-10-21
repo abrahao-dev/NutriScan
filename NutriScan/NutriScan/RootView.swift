@@ -36,10 +36,9 @@ struct RootView: View {
                         .navigationTitle(Text("Favoritos"))
                         .navigationBarTitleDisplayMode(.inline)
                 case .profile:
-                    Text("Perfil")
-                        .padding()
-                    Spacer()
-    //                ProfileRootView()
+                    ProfileRootView()
+                        .navigationTitle("Perfil")
+                        .navigationBarTitleDisplayMode(.inline)
                 }
                 CustomTabBarView(selectedTab: $selectedTab)
             }

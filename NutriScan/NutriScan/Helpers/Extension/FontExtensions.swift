@@ -30,4 +30,8 @@ extension Font {
     static var regular24: Font {
         .custom("Signika", size: 24).weight(.regular)// 400
     }
+    
+    static var regular14: Font {
+        .custom("Signika", size: 14).weight(.regular) //400
+    }
 }
