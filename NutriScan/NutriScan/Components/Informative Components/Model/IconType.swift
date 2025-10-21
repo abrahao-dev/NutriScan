@@ -7,6 +7,6 @@
 import SwiftUI
 
 enum IconType {
-    case asset(name: String)
-    case system(name: String)
+    case asset(name: AssetName)
+    case system(name: AssetName)
 }

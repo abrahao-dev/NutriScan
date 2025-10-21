@@ -18,11 +18,11 @@ struct IconCircleView: View {
         Group {
             switch icon {
             case .asset(let name):
-                Image(name)
+                Image(name.rawValue)
                     .resizable()
                     .scaledToFit()
             case .system(let name):
-                Image(systemName: name)
+                Image(systemName: name.rawValue)
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(foregroundColor)
@@ -36,12 +36,12 @@ struct IconCircleView: View {
 }
 
 #Preview {
-    IconCircleView(icon: .asset(name: "Broken Heart Icon"), backgroundColor: .iconBackground)
-    IconCircleView(icon: .system(name: "checkmark"), backgroundColor: .primary1, foregroundColor: .icon1)
-    IconCircleView(icon: .asset(name: "Fat Icon"), backgroundColor: .secondary2)
-    IconCircleView(icon: .asset(name: "Muscle Arm Icon"), backgroundColor: .secondary3)
-    IconCircleView(icon: .system(name: "suit.heart.fill"), backgroundColor: .iconBackground, foregroundColor: .icon2)
-    IconCircleView(icon: .asset(name: "Intestine Icon"), backgroundColor: .secondary1)
-    IconCircleView(icon: .asset(name: "Scan"), backgroundColor: .primary1)
-    IconCircleView(icon: .system(name: "exclamationmark"), backgroundColor: .secondary2, foregroundColor: .alert2)
+    IconCircleView(icon: .asset(name: .brokenHeart), backgroundColor: .iconBackground)
+    IconCircleView(icon: .system(name: .checkmark), backgroundColor: .primary1, foregroundColor: .icon1)
+    IconCircleView(icon: .asset(name: .fat), backgroundColor: .secondary2)
+    IconCircleView(icon: .asset(name: .muscleArm), backgroundColor: .secondary3)
+    IconCircleView(icon: .system(name: .heart), backgroundColor: .iconBackground, foregroundColor: .icon2)
+    IconCircleView(icon: .asset(name: .intestine), backgroundColor: .secondary1)
+    IconCircleView(icon: .asset(name: .scan), backgroundColor: .primary1)
+    IconCircleView(icon: .system(name: .warning), backgroundColor: .secondary2, foregroundColor: .alert2)
 }

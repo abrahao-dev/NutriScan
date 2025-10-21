@@ -38,7 +38,7 @@ struct CustomTabBarView: View {
                                 .font(.system(size: 20))
                                 .frame(width: 24, height: 24)
                             Text("Pesquisa")
-                                .font(.custom("Signika", size: 14))
+                                .font(.regular14)
                         }
                         .frame(width: geo.size.width, height: geo.size.height)
                     }
@@ -53,7 +53,7 @@ struct CustomTabBarView: View {
             } label: {
                 GeometryReader { geo in
                     VStack  {
-                        IconCircleView(icon: .asset(name: "Scan"), backgroundColor: .primary1, size: 30)
+                        IconCircleView(icon: .asset(name: .scan), backgroundColor: .primary1, size: 30)
                         Rectangle()
                             .foregroundColor(.clear)
                             .frame(width: 70, height: 30)

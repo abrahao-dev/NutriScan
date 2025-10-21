@@ -83,10 +83,10 @@ struct DetailsViewControllerWrapper: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> DetailsViewController {
         return DetailsViewController(title: "Biscoite Recheado", brand: "Trakinas", imageURL: URL(string: "https://placehold.co/60")!, score: .scoreE, infoItem: [
-            .init(icon: .system(name: "heart.fill"), foregroundColor: .icon2,  title: "Bom para o coração", subtitle: "Baixo em gordura: 2,80g", backgroundColor: .iconBackground),
-            .init(icon: .asset(name: "Muscle Arm Icon"), foregroundColor: nil, title: "Construção de Ossos e Músculos", subtitle: "Alto em proteínas: 14g", backgroundColor: .secondary3),
-            .init(icon: .asset(name: "Intestine Icon"), foregroundColor: nil, title: "Auxilia no funcionamento do intestino", subtitle: "Rico em fibras: 10g", backgroundColor: .secondary1),
-            .init(icon: .system(name: "checkmark"), foregroundColor: .icon1, title: "Lactose", subtitle: "Zero em lactose", backgroundColor: .primary1)
+            .init(icon: .system(name: .heart), foregroundColor: .icon2,  title: "Bom para o coração", subtitle: "Baixo em gordura: 2,80g", backgroundColor: .iconBackground),
+            .init(icon: .asset(name: .muscleArm), foregroundColor: nil, title: "Construção de Ossos e Músculos", subtitle: "Alto em proteínas: 14g", backgroundColor: .secondary3),
+            .init(icon: .asset(name: .intestine), foregroundColor: nil, title: "Auxilia no funcionamento do intestino", subtitle: "Rico em fibras: 10g", backgroundColor: .secondary1),
+            .init(icon: .system(name: .checkmark), foregroundColor: .icon1, title: "Lactose", subtitle: "Zero em lactose", backgroundColor: .primary1)
         ])
     }
 
