@@ -80,16 +80,25 @@ extension DetailsViewController {
 struct DetailsViewControllerWrapper: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = DetailsViewController
-
+    
+    let foodInfo: FoodInformation
+    
     func makeUIViewController(context: Context) -> DetailsViewController {
-        return DetailsViewController(title: "Biscoite Recheado", brand: "Trakinas", imageURL: URL(string: "https://placehold.co/60")!, score: .scoreE, infoItem: [
-            .init(icon: .system(name: .heart), foregroundColor: .icon2,  title: "Bom para o coração", subtitle: "Baixo em gordura: 2,80g", backgroundColor: .iconBackground),
-            .init(icon: .asset(name: .muscleArm), foregroundColor: nil, title: "Construção de Ossos e Músculos", subtitle: "Alto em proteínas: 14g", backgroundColor: .secondary3),
-            .init(icon: .asset(name: .intestine), foregroundColor: nil, title: "Auxilia no funcionamento do intestino", subtitle: "Rico em fibras: 10g", backgroundColor: .secondary1),
-            .init(icon: .system(name: .checkmark), foregroundColor: .icon1, title: "Lactose", subtitle: "Zero em lactose", backgroundColor: .primary1)
-        ])
+        
+        return DetailsViewController(
+            title: foodInfo.name,           // <--- Alterado
+            brand: foodInfo.brand,          // <--- Alterado
+            imageURL: foodInfo.imageUrl,    // <--- Alterado
+            score: foodInfo.score,          // <--- Alterado
+            infoItem: [ // Mantive seus dados fixos, pois eles não vêm do 'foodInfo'
+                .init(icon: .system(name: .heart), foregroundColor: .icon2,  title: "Bom para o coração", subtitle: "Baixo em gordura: 2,80g", backgroundColor: .iconBackground),
+                .init(icon: .asset(name: .muscleArm), foregroundColor: nil, title: "Construção de Ossos e Músculos", subtitle: "Alto em proteínas: 14g", backgroundColor: .secondary3),
+                .init(icon: .asset(name: .intestine), foregroundColor: nil, title: "Auxilia no funcionamento do intestino", subtitle: "Rico em fibras: 10g", backgroundColor: .secondary1),
+                .init(icon: .system(name: .checkmark), foregroundColor: .icon1, title: "Lactose", subtitle: "Zero em lactose", backgroundColor: .primary1)
+            ]
+        )
     }
-
+    
     func updateUIViewController(_ uiViewController: DetailsViewController, context: Context) {
         
     }

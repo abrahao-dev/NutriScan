@@ -6,7 +6,8 @@
 //
 import Foundation
 
-struct FoodInformation {
+struct FoodInformation: Identifiable, Hashable {
+    var id = UUID()
     let name: String
     let brand: String
     let imageUrl: URL

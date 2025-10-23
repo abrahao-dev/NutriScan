@@ -20,11 +20,9 @@ struct RootView: View {
                     HomeRootView()
                         .navigationBarTitleDisplayMode(.inline)
                 case .search:
-                    Text("Busca")
-                        .padding()
-                    Spacer()
-    //                SearchRootView()
+                    SearchFoodView()
                 case .scan:
+                    // Conflito resolvido: Mantida a versão da 'develop'
                     ScanRootView()
                         .navigationBarTitleDisplayMode(.inline)
                 case .favorites:
