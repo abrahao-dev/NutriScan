@@ -17,17 +17,14 @@ struct RootView: View {
             VStack {
                 switch selectedTab {
                 case .home:
-                    Text("Home")
-                        .padding()
-                    Spacer()
-    //              HomeRootView()
+                    HomeRootView()
+                        .navigationBarTitleDisplayMode(.inline)
                 case .search:
                     SearchFoodView()
                 case .scan:
-                    Text("Scaner")
-                        .padding()
-                    Spacer()
-    //              ScanRootView()
+                    // Conflito resolvido: Mantida a versão da 'develop'
+                    ScanRootView()
+                        .navigationBarTitleDisplayMode(.inline)
                 case .favorites:
                     FavoriteRootView()
                         .navigationTitle(Text("Favoritos"))
