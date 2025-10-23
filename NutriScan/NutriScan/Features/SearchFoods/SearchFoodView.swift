@@ -10,13 +10,20 @@ import SwiftUI
 struct SearchFoodView: View {
     @StateObject private var viewModel = SearchFoodsViewModel()
     
-    let title: String = "Busca"
-    
     var body: some View {
         List(viewModel.filteredProducts) { foodInfo in
-            FoodInformationItemView(foodInformation: foodInfo)
-                .listRowInsets(EdgeInsets())
+            NavigationLink(
+                destination:
+                    DetailsViewControllerWrapper(foodInfo: foodInfo)
+                    .ignoresSafeArea()
+                    .navigationTitle("Detalhes do Produto")
+                    .navigationBarTitleDisplayMode(.inline)
+            ){
+                FoodInformationItemView(foodInformation: foodInfo)
+            }
+            .listRowInsets(EdgeInsets())
         }
+        .padding(.horizontal)
         .listStyle(.plain)
         .navigationTitle("Busca")
         .navigationBarTitleDisplayMode(.inline)

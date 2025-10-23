@@ -21,9 +21,10 @@ struct FoodInformationItemView: View {
                 Text(foodInformation.brand)
                     .foregroundStyle(.neutralColor2)
             }
+            
             Spacer()
+            
             NumberScoreView(numberScore: foodInformation.score)
-            Image(systemName: "chevron.right")
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 10)
@@ -32,9 +33,11 @@ struct FoodInformationItemView: View {
 
 #Preview {
     guard let url = URL(string: "https://placehold.co/60") else { return EmptyView() }
-    let foodInformation = FoodInformation(name: "Leite condensado",
-                                          brand: "Italac",
-                                          imageUrl: url,
-                                          score: .scoreE)
+    let foodInformation = FoodInformation(
+        name: "Leite condensado",
+        brand: "Italac",
+        imageUrl: url,
+        score: .scoreE
+    )
     return FoodInformationItemView(foodInformation: foodInformation)
 }
