@@ -20,17 +20,14 @@ struct RootView: View {
                     Text("Home")
                         .padding()
                     Spacer()
-    //                HomeRootView()
+    //              HomeRootView()
                 case .search:
-                    Text("Busca")
-                        .padding()
-                    Spacer()
-    //                SearchRootView()
+                    SearchFoodView()
                 case .scan:
                     Text("Scaner")
                         .padding()
                     Spacer()
-    //                ScanRootView()
+    //              ScanRootView()
                 case .favorites:
                     FavoriteRootView()
                         .navigationTitle(Text("Favoritos"))
