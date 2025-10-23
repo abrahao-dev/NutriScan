@@ -10,6 +10,8 @@ import SwiftUI
 
 class DetailsView: UIView {
 
+    var onCompareButtonTapped: (() -> Void)?
+    
     private let productImageView: UIImageView = {
         let imageView = UIImageView(image: .onboarding1)
         imageView.contentMode = .scaleAspectFit
@@ -71,6 +73,13 @@ class DetailsView: UIView {
         setupLayout()
         setButtonConfiguration(button: favoriteButton, title: "Salvar nos Favoritos", image: UIImage(systemName: "heart"))
         setButtonConfiguration(button: compareButton, title: "Comparar Produto")
+        
+        compareButton.addTarget(self, action: #selector(handleCompareTap), for: .touchUpInside)
+    }
+    
+    @objc private func handleCompareTap() {
+        // 4. CHAME O CALLBACK
+        onCompareButtonTapped?()
     }
     
     required init? (coder: NSCoder) {

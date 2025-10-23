@@ -14,17 +14,11 @@ class DetailsViewController: UIViewController {
     private let contentView = DetailsView()
     
     
-    private var productTitle: String
-    private var brand: String
-    private var imageURL: URL?
-    private var score: NumberScore
+    private var foodInfo: FoodInformation
     private var infoItems: [InfoItem]
     
-    init(title: String, brand: String, imageURL: URL?, score: NumberScore, infoItem: [InfoItem]) {
-        self.productTitle = title
-        self.brand = brand
-        self.imageURL = imageURL
-        self.score = score
+    init(foodInfo: FoodInformation, infoItem: [InfoItem]) {
+        self.foodInfo = foodInfo
         self.infoItems = infoItem
         super.init(nibName: nil, bundle: nil)
     }
@@ -37,6 +31,11 @@ class DetailsViewController: UIViewController {
         super.viewDidLoad()
         setupLayout()
         configure()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 }
 
@@ -68,12 +67,32 @@ extension DetailsViewController {
     
     private func configure() {
         contentView.configure(
-            imageURL: imageURL,
-            productTitle: productTitle,
-            brand: brand,
-            score: score,
+            imageURL: foodInfo.imageUrl,
+            productTitle: foodInfo.name,
+            brand: foodInfo.brand,
+            score: foodInfo.score,
             infoItems: infoItems
         )
+        
+        contentView.onCompareButtonTapped = { [weak self] in
+            self?.presentCompareScreen()
+        }
+    }
+    
+    private func presentCompareScreen() {
+        guard let navigationController = self.navigationController else {
+            print("Erro: DetailsViewController não está em um Navigation Controller.")
+            return
+        }
+        
+        let compareView = CompareFoodContainerView(productOne: self.foodInfo)
+        
+        let hostingController = UIHostingController(
+            rootView: NavigationView { compareView }
+        )
+        
+        navigationController.setNavigationBarHidden(true, animated: true)
+        navigationController.pushViewController(hostingController, animated: true)
     }
 }
 
@@ -86,11 +105,8 @@ struct DetailsViewControllerWrapper: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> DetailsViewController {
         
         return DetailsViewController(
-            title: foodInfo.name,           // <--- Alterado
-            brand: foodInfo.brand,          // <--- Alterado
-            imageURL: foodInfo.imageUrl,    // <--- Alterado
-            score: foodInfo.score,          // <--- Alterado
-            infoItem: [ // Mantive seus dados fixos, pois eles não vêm do 'foodInfo'
+            foodInfo: foodInfo,
+            infoItem: [
                 .init(icon: .system(name: .heart), foregroundColor: .icon2,  title: "Bom para o coração", subtitle: "Baixo em gordura: 2,80g", backgroundColor: .iconBackground),
                 .init(icon: .asset(name: .muscleArm), foregroundColor: nil, title: "Construção de Ossos e Músculos", subtitle: "Alto em proteínas: 14g", backgroundColor: .secondary3),
                 .init(icon: .asset(name: .intestine), foregroundColor: nil, title: "Auxilia no funcionamento do intestino", subtitle: "Rico em fibras: 10g", backgroundColor: .secondary1),
