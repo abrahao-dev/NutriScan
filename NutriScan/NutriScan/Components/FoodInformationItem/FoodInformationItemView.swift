@@ -13,8 +13,17 @@ struct FoodInformationItemView: View {
     
     var body: some View {
         HStack {
-            AsyncImage(url: foodInformation.imageUrl)
-                .frame(width: 60, height: 60)
+            AsyncImage(url: foodInformation.imageUrl) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Rectangle()
+                    .fill(Color(.systemGray5))
+            }
+            .frame(width: 60, height: 60)
+            .clipped()
+            .cornerRadius(8)
             VStack(alignment: .leading) {
                 Text(foodInformation.name)
                     .foregroundStyle(.neutralColor1)

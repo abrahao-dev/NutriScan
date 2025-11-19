@@ -8,20 +8,24 @@
 import SwiftUI
 
 struct EmptyStateComponentView: View {
-    var imageName: String = "cart"   // pode trocar para "empty_basket" se tiver no Assets
+    var imageName: String = "basket.fill"
     var title: String = "Nenhum resultado encontrado"
 
     var body: some View {
         VStack(spacing: 12) {
-            Image(systemName: imageName) // ou Image("empty_basket")
+            Spacer()
+            
+            Image(systemName: imageName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 72, height: 72)
-                .foregroundColor(.secondary)
+                .foregroundColor(.neutralColor3)
+                .opacity(0.4)
 
             Text(title)
-                .font(.headline)
+                .font(.regular24)
                 .multilineTextAlignment(.center)
+                .foregroundStyle(.neutralColor2)
         }
         .padding(.horizontal, 24)
     }
