@@ -9,8 +9,17 @@ import SwiftUI
 
 struct SearchFoodView: View {
     @StateObject private var viewModel = SearchFoodsViewModel()
+    @State private var selectedItem: FoodInformation?
     
     var body: some View {
+        NavigationView {
+            List {
+                ForEach(viewModel.filteredProducts) { foodInfo in
+                    Button {
+                        selectedItem = foodInfo
+                    } label: {
+                        FoodInformationItemView(foodInformation: foodInfo)
+                    }
         Group {
             List(viewModel.filteredProducts) { foodInfo in
                 NavigationLink(
@@ -26,6 +35,13 @@ struct SearchFoodView: View {
             }
             .padding(.horizontal)
             .listStyle(.plain)
+            .navigationTitle("Busca")
+            .navigationBarTitleDisplayMode(.inline)
+            .searchable(text: $viewModel.searchText, prompt: viewModel.prompt)
+        }
+        .sheet(item: $selectedItem) { item in
+            DetailsView(foodInfo: item)
+        }
             
             if viewModel.filteredProducts.isEmpty &&
                 !viewModel.searchText.isEmpty &&

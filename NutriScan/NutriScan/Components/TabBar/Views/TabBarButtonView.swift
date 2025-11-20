@@ -24,6 +24,7 @@ struct TabBarButtonView: View {
                         .font(.regular14)
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
+                .background(Color.white)
         }
     }
 }

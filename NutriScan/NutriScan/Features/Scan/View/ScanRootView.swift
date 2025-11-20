@@ -12,6 +12,7 @@ struct ScanRootView: View {
         VStack {
             InitialScanView()
                 .ignoresSafeArea()
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

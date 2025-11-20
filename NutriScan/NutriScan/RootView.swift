@@ -8,38 +8,30 @@
 import SwiftUI
 
 struct RootView: View {
-    
-    @State var selectedTab: Tabs = .home
+    @EnvironmentObject var router: TabRouter
     
     var body: some View {
         
         NavigationView {
             VStack {
-                switch selectedTab {
+                switch router.selectedTab {
                 case .home:
                     HomeRootView()
-                        .navigationBarTitleDisplayMode(.inline)
                 case .search:
                     SearchFoodView()
                 case .scan:
-                    // Conflito resolvido: Mantida a versão da 'develop'
                     ScanRootView()
-                        .navigationBarTitleDisplayMode(.inline)
                 case .favorites:
-                    FavoriteRootView()
-                        .navigationTitle(Text("Favoritos"))
-                        .navigationBarTitleDisplayMode(.inline)
+                    FavoriteView()
                 case .profile:
                     ProfileRootView()
-                        .navigationTitle("Perfil")
-                        .navigationBarTitleDisplayMode(.inline)
                 }
-                CustomTabBarView(selectedTab: $selectedTab)
+                CustomTabBarView(selectedTab: $router.selectedTab)
             }
         }
     }
 }
 
 #Preview {
-    RootView()
+    RootView().environmentObject(TabRouter())
 }

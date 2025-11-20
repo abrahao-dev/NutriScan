@@ -12,6 +12,7 @@ struct HomeRootView: View {
         VStack {
             HomeViewControllerWrapper()
                 .ignoresSafeArea()
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
