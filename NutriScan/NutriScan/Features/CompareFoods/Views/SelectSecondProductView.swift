@@ -9,6 +9,9 @@ import SwiftUI
 struct SelectSecondProductView: View {
     @ObservedObject var viewModel: CompareFoodsViewModel
     
+    @State private var isScanLinkActive = false
+    @State private var isSearchLinkActive = false
+    
     var body: some View {
         VStack(spacing: 30) {
             Text("Selecione o segundo produto")
@@ -26,7 +29,13 @@ struct SelectSecondProductView: View {
             
             Spacer()
             
-            NavigationLink(destination: ScanSecondProductView(compareViewModel: viewModel)) {
+            NavigationLink(
+                destination: ScanSecondProductView(
+                    compareViewModel: viewModel,
+                    isLinkActive: $isScanLinkActive
+                ),
+                isActive: $isScanLinkActive
+            ) {
                 Label("Escanear Produto", systemImage: "barcode.viewfinder")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
@@ -37,7 +46,12 @@ struct SelectSecondProductView: View {
             }
             .padding(.horizontal)
             
-            NavigationLink(destination: SearchSecondProductView(compareViewModel: viewModel)) {
+            NavigationLink(
+                destination: SearchSecondProductView(
+                    compareViewModel: viewModel,
+                    isLinkActive: $isSearchLinkActive
+                )
+            ) {
                 Label("Buscar Produto", systemImage: "magnifyingglass")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
@@ -59,6 +73,8 @@ struct SearchSecondProductView: View {
     
     @ObservedObject var compareViewModel: CompareFoodsViewModel
     
+    @Binding var isLinkActive: Bool
+    
     var body: some View {
         VStack(spacing: 0) {
             
@@ -67,6 +83,7 @@ struct SearchSecondProductView: View {
             List(searchViewModel.filteredProducts) { foodInfo in
                 Button(action: {
                     compareViewModel.setProductForComparison(foodInfo)
+                    self.isLinkActive = false
                 }) {
                     FoodInformationItemView(foodInformation: foodInfo)
                         .foregroundColor(.primary)
@@ -113,22 +130,43 @@ struct ProductSummaryCard: View {
 struct ScanSecondProductView: View {
     
     @ObservedObject var compareViewModel: CompareFoodsViewModel
+    @Binding var isLinkActive: Bool
+    
+    @StateObject private var delegate = ScanDelegate()
     
     var body: some View {
         VStack(spacing: 0) {
             
             ProductSummaryCard(product: compareViewModel.productOne)
-            Spacer()
+                .frame(maxHeight: 120)
             
-            Text("ScannerView")
-            Spacer()
+            ScanViewControllerWrapper(delegate: delegate, isLinkActive: $isLinkActive)
+                .ignoresSafeArea(.container, edges: .bottom)
             
-            Button("Simular Scan (Oreo)") {
-                let oreo = FoodInformation(name: "Bolacha Recheada", brand: "Oreo", imageUrl: URL(string: "https://placehold.co/60?text=Bolacha")!, score: .scoreE)
-                
-                compareViewModel.setProductForComparison(oreo)
+            if delegate.isLoading {
+                VStack {
+                    Spacer()
+                    ProgressView("Buscando produto...")
+                        .padding()
+                        .background(Color.black.opacity(0.7))
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ignoresSafeArea()
+            } else if delegate.errorMessage != nil {
+                // ... (Sua lógica para mostrar o erro e a opção de digitar manualmente)
+                Text(delegate.errorMessage ?? "Erro Desconhecido")
+                    .foregroundColor(.red)
             }
-            .padding()
+        }
+        .onReceive(delegate.$foundProduct) { product in
+            guard let product = product else { return }
+            
+            compareViewModel.setProductForComparison(product)
+            
+            isLinkActive = false
         }
         .navigationTitle("Escanear Produto")
         .navigationBarTitleDisplayMode(.inline)

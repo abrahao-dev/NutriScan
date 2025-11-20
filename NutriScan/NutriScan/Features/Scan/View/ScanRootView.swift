@@ -10,7 +10,7 @@ import SwiftUI
 struct ScanRootView: View {
     var body: some View {
         VStack {
-            ScanViewControllerWrapper()
+            InitialScanView()
                 .ignoresSafeArea()
         }
     }

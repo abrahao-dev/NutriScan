@@ -10,6 +10,8 @@ import SwiftUI
 import AVFoundation
 
 class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+    // Callback para notificar o SwiftUI
+        var onCodeDetected: ((String) -> Void)?
     
     // AVFoundation para a Câmera
     private var captureSession: AVCaptureSession!
@@ -279,16 +281,18 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
             
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             
+            self.onCodeDetected?(stringValue)
+            
             print("Código de barras detectado: \(stringValue)")
             
             instructionLabel.text = "Código: \(stringValue)"
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                if self.view.window != nil {
-                    self.instructionLabel.text = "Aponte para o código de barras do produto"
-                    self.startCameraSession()
-                }
-            }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+//                if self.view.window != nil {
+//                    self.instructionLabel.text = "Aponte para o código de barras do produto"
+//                    self.startCameraSession()
+//                }
+//            }
         } else {
              if !captureSession.isRunning {
                  startCameraSession()
@@ -303,8 +307,18 @@ struct ScanViewControllerWrapper: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = ScanViewController
     
+    @ObservedObject var delegate: ScanDelegate
+    
+    var isLinkActive: Binding<Bool>? = nil
+    
     func makeUIViewController(context: Context) -> ScanViewController {
-        return ScanViewController()
+        let vc = ScanViewController()
+        
+        vc.onCodeDetected = { barcode in
+            delegate.handleBarcode(barcode)
+        }
+        
+        return vc
     }
     
     func updateUIViewController(_ uiViewController: ScanViewController, context: Context) {
