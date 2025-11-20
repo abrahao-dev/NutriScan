@@ -30,6 +30,8 @@ class ProfileViewController: UIViewController {
         )
         return tableView
     }()
+    
+    var router: TabRouter?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,14 +84,19 @@ extension ProfileViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.row {
         case 0:
-            print("Clicou em Editar Perfil")
+            let editProfileView: some View = EditProfileView()
+            let controller = UIHostingController(rootView: editProfileView)
+            self.present(controller, animated: true)
         case 1:
-            let favoriteView: some View = RootView(selectedTab: .favorites)
-            let controller = UIHostingController(rootView: favoriteView)
-            self.navigationController?.pushViewController(controller, animated: true)
-            
+            router?.selectedTab = .favorites
+            navigationController?.popToRootViewController(animated: false)
         case 2:
-            print("Clicou em Sair")
+            guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = scene.windows.first else { return }
+            let loginView: some View = LoginView()
+            let controller = UIHostingController(rootView: loginView)
+            window.rootViewController = UINavigationController(rootViewController: controller)
+            window.makeKeyAndVisible()
         default:
             break
         }
@@ -98,14 +105,18 @@ extension ProfileViewController: UITableViewDelegate {
 
 struct ProfileViewControllerWrapper: UIViewControllerRepresentable {
     
+    @EnvironmentObject var router: TabRouter
+    
     typealias UIViewControllerType = ProfileViewController
     
     func makeUIViewController(context: Context) -> ProfileViewController {
-        return ProfileViewController()
+        let controller = ProfileViewController()
+        controller.router = router
+        return controller
     }
     
     func updateUIViewController(_ uiViewController: ProfileViewController, context: Context) {
-        
+        uiViewController.router = router
     }
     
 }

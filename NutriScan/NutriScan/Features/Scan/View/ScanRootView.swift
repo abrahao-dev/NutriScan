@@ -12,6 +12,7 @@ struct ScanRootView: View {
         VStack {
             ScanViewControllerWrapper()
                 .ignoresSafeArea()
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

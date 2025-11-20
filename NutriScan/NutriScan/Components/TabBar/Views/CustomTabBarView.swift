@@ -41,6 +41,7 @@ struct CustomTabBarView: View {
                                 .font(.regular14)
                         }
                         .frame(width: geo.size.width, height: geo.size.height)
+                        .background(Color.white)
                     }
                     TabBarButtonView(buttonText: "Pesquisa", imageName: "magnifyingglass")
                 }
@@ -59,6 +60,7 @@ struct CustomTabBarView: View {
                             .frame(width: 70, height: 30)
                     }
                     .frame(width: geo.size.width, height: geo.size.height)
+                    .background(Color.white)
                 }
             }
             
@@ -88,6 +90,7 @@ struct CustomTabBarView: View {
             .tint(Color.primary1)
         }
         .frame(height: 68)
+        .background(Color.white)
     }
 }
 

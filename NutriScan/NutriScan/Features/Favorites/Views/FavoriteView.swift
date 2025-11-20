@@ -1,20 +1,20 @@
 //
-//  Untitled.swift
+//  FavoriteView.swift
 //  NutriScan
 //
-//  Created by Rapha Vidal on 23/10/25.
+//  Created by Elena Diniz on 11/14/25.
 //
 
 import SwiftUI
 
-struct SearchFoodView: View {
-    @StateObject private var viewModel = SearchFoodsViewModel()
+struct FavoriteView: View {
+    @StateObject private var viewModel = FavoriteViewModel()
     @State private var selectedItem: FoodInformation?
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.filteredProducts) { foodInfo in
+                ForEach(viewModel.allFoods) { foodInfo in
                     Button {
                         selectedItem = foodInfo
                     } label: {
@@ -23,9 +23,8 @@ struct SearchFoodView: View {
                 }
             }
             .listStyle(.plain)
-            .navigationTitle("Busca")
+            .navigationTitle("Favoritos")
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $viewModel.searchText, prompt: viewModel.prompt)
         }
         .sheet(item: $selectedItem) { item in
             DetailsView(foodInfo: item)
@@ -34,5 +33,5 @@ struct SearchFoodView: View {
 }
 
 #Preview {
-    SearchFoodView()
+    FavoriteView()
 }

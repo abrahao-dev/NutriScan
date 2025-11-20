@@ -11,7 +11,10 @@ struct ProfileRootView: View {
     var body: some View {
         VStack {
             ProfileViewControllerWrapper()
+                .environmentObject(TabRouter())
                 .ignoresSafeArea()
+                .navigationTitle("Perfil")
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

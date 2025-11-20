@@ -11,7 +11,7 @@ import SwiftUI
 class DetailsViewController: UIViewController {
     
     private let scrollView = UIScrollView()
-    private let contentView = DetailsView()
+    private let contentView = DetailsScreen()
     
     
     private var foodInfo: FoodInformation
