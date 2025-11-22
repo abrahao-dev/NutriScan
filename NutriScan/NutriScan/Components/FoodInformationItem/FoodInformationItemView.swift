@@ -24,6 +24,7 @@ struct FoodInformationItemView: View {
             .frame(width: 60, height: 60)
             .clipped()
             .cornerRadius(8)
+            
             VStack(alignment: .leading) {
                 Text(foodInformation.name)
                     .foregroundStyle(.neutralColor1)

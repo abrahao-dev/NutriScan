@@ -23,7 +23,7 @@ struct SelectSecondProductView: View {
             
             FoodInformationItemView(foodInformation: viewModel.productOne)
                 .padding()
-                .background(Color(.systemGray6))
+                .background(Color(.alertColor3).opacity(0.1))
                 .cornerRadius(12)
                 .padding(.horizontal)
             
@@ -45,7 +45,7 @@ struct SelectSecondProductView: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.accentColor)
+                    .background(Color.alertColor3)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
@@ -61,8 +61,8 @@ struct SelectSecondProductView: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .foregroundColor(.accentColor)
+                    .background(Color.primaryColor3)
+                    .foregroundColor(.white)
                     .cornerRadius(10)
             }
             .padding(.horizontal)
@@ -96,6 +96,16 @@ struct SearchSecondProductView: View {
                 .listRowInsets(EdgeInsets())
             }
             .listStyle(.plain)
+            .overlay(
+                Group {
+                    if searchViewModel.isLoading {
+                        ProgressView("Buscando produtos...")
+                            .padding()
+                            .background(Color.secondary.opacity(0.6))
+                            .cornerRadius(10)
+                    }
+                }
+            )
         }
         .navigationTitle("Buscar Produto")
         .navigationBarTitleDisplayMode(.inline)

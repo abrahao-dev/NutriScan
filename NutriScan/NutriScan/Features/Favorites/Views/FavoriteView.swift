@@ -25,7 +25,7 @@ struct FavoriteView: View {
         .navigationTitle("Favoritos")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $selectedItem) { item in
-            DetailsViewControllerWrapper(foodInfo: item)
+            DetailsView(foodInfo: item)
         }
     }
 }
