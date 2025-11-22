@@ -10,7 +10,6 @@ import SwiftUI
 import AVFoundation
 
 class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
-    // Callback para notificar o SwiftUI
         var onCodeDetected: ((String) -> Void)?
     
     // AVFoundation para a Câmera
@@ -267,6 +266,20 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         }, completion: nil)
     }
     
+    func pauseScanAnimation() {
+        scanLineView.layer.removeAllAnimations()
+    }
+    
+    func restartScanning() {
+        DispatchQueue.main.async {
+            self.instructionLabel.text = "Aponte para o código de barras do produto"
+        }
+
+        startCameraSession()
+        
+        animateScanLine()
+    }
+    
     // MARK: - AVCaptureMetadataOutputObjectsDelegate
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
@@ -281,18 +294,14 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
             
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             
+            captureSession.stopRunning()
+            pauseScanAnimation()
+            
+            DispatchQueue.main.async {
+                self.instructionLabel.text = "Código: \(stringValue)"
+            }
+            
             self.onCodeDetected?(stringValue)
-            
-            print("Código de barras detectado: \(stringValue)")
-            
-            instructionLabel.text = "Código: \(stringValue)"
-            
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-//                if self.view.window != nil {
-//                    self.instructionLabel.text = "Aponte para o código de barras do produto"
-//                    self.startCameraSession()
-//                }
-//            }
         } else {
              if !captureSession.isRunning {
                  startCameraSession()
@@ -316,6 +325,10 @@ struct ScanViewControllerWrapper: UIViewControllerRepresentable {
         
         vc.onCodeDetected = { barcode in
             delegate.handleBarcode(barcode)
+        }
+        
+        delegate.restartScanAction = {
+            vc.restartScanning()
         }
         
         return vc

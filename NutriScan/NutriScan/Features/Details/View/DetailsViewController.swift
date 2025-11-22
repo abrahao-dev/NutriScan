@@ -35,7 +35,6 @@ class DetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 }
 
@@ -88,7 +87,7 @@ extension DetailsViewController {
         let compareView = CompareFoodContainerView(productOne: self.foodInfo)
         
         let hostingController = UIHostingController(
-            rootView: NavigationView { compareView }
+            rootView:  compareView
         )
         
         navigationController.setNavigationBarHidden(true, animated: true)

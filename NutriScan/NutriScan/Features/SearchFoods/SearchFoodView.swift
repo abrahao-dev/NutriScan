@@ -12,29 +12,24 @@ struct SearchFoodView: View {
     @State private var selectedItem: FoodInformation?
     
     var body: some View {
-        Group {
-            NavigationView {
-                List {
-                    ForEach(viewModel.filteredProducts) { foodInfo in
-                        Button {
-                            selectedItem = foodInfo
-                        } label: {
-                            FoodInformationItemView(foodInformation: foodInfo)
-                        }
-                    }
-                }
-                .padding(.horizontal)
-                .listStyle(.plain)
-                
-                if viewModel.filteredProducts.isEmpty &&
-                    !viewModel.searchText.isEmpty &&
-                    !viewModel.isLoading {
-                    EmptyStateComponentView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color(.systemBackground))
+        List {
+            ForEach(viewModel.filteredProducts) { foodInfo in
+                Button {
+                    selectedItem = foodInfo
+                } label: {
+                    FoodInformationItemView(foodInformation: foodInfo)
                 }
             }
+            
+            if viewModel.filteredProducts.isEmpty &&
+                !viewModel.searchText.isEmpty &&
+                !viewModel.isLoading {
+                EmptyStateComponentView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(.systemBackground))
+            }
         }
+        .listStyle(.plain)
         .sheet(item: $selectedItem) { item in
             DetailsView(foodInfo: item)
         }

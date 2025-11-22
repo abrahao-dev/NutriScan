@@ -12,10 +12,12 @@ class ScanDelegate: ObservableObject {
     @Published var foundProduct: FoodInformation?
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var isShowingManualEntry = false
     
     private let service = OpenFoodFactsService()
     
-    // AÇÃO QUE A API CHAMA
+    var restartScanAction: (() -> Void)?
+    
     func handleBarcode(_ barcode: String) {
         guard !isLoading else { return }
         errorMessage = nil
@@ -26,12 +28,26 @@ class ScanDelegate: ObservableObject {
                 self?.isLoading = false
                 switch result {
                 case .success(let foodInfo):
-                    self?.foundProduct = foodInfo // Isso aciona o .onReceive na View
+                    self?.foundProduct = foodInfo
                 case .failure(let error):
-                    self?.errorMessage = "Não foi possível encontrar o produto com o código \(barcode)."
+                    self?.errorMessage = "Não foi possível encontrar o produto com o código \(barcode). Tente digitar manualmente ou escanear novamente."
                     print("Erro API Barcode: \(error.localizedDescription)")
                 }
             }
+        }
+    }
+    
+    func restartScan() {
+        errorMessage = nil
+        restartScanAction?()
+    }
+    
+    func startManualEntry() {
+        self.errorMessage = nil
+        self.isShowingManualEntry = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.isShowingManualEntry = false
         }
     }
 }

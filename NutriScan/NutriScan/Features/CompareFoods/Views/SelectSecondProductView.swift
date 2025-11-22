@@ -30,9 +30,14 @@ struct SelectSecondProductView: View {
             Spacer()
             
             NavigationLink(
-                destination: ScanSecondProductView(
-                    compareViewModel: viewModel,
-                    isLinkActive: $isScanLinkActive
+                destination: ScanView(
+                    onProductFound: { product in
+                        viewModel.setProductForComparison(product)
+                    },
+                    onNavigationCompleted: {
+                        isScanLinkActive = false
+                    },
+                    productOne: viewModel.productOne
                 ),
                 isActive: $isScanLinkActive
             ) {
@@ -124,51 +129,5 @@ struct ProductSummaryCard: View {
         .padding()
         .frame(maxWidth: .infinity)
         .background(Color(.systemGray5))
-    }
-}
-
-struct ScanSecondProductView: View {
-    
-    @ObservedObject var compareViewModel: CompareFoodsViewModel
-    @Binding var isLinkActive: Bool
-    
-    @StateObject private var delegate = ScanDelegate()
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            
-            ProductSummaryCard(product: compareViewModel.productOne)
-                .frame(maxHeight: 120)
-            
-            ScanViewControllerWrapper(delegate: delegate, isLinkActive: $isLinkActive)
-                .ignoresSafeArea(.container, edges: .bottom)
-            
-            if delegate.isLoading {
-                VStack {
-                    Spacer()
-                    ProgressView("Buscando produto...")
-                        .padding()
-                        .background(Color.black.opacity(0.7))
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .ignoresSafeArea()
-            } else if delegate.errorMessage != nil {
-                // ... (Sua lógica para mostrar o erro e a opção de digitar manualmente)
-                Text(delegate.errorMessage ?? "Erro Desconhecido")
-                    .foregroundColor(.red)
-            }
-        }
-        .onReceive(delegate.$foundProduct) { product in
-            guard let product = product else { return }
-            
-            compareViewModel.setProductForComparison(product)
-            
-            isLinkActive = false
-        }
-        .navigationTitle("Escanear Produto")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }

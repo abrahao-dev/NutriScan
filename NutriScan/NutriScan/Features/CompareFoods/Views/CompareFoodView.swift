@@ -20,7 +20,6 @@ struct CompareFoodView: View {
                         ProductCompareColumn(
                             product: productTwo,
                             onRemove: {
-                                // Ação para remover o produto 2
                                 viewModel.removeProductForComparison()
                             }
                         )
