@@ -17,6 +17,19 @@ class LoginViewModel: ObservableObject {
     @Published var senha = ""
 
     // Funções de lógica vazias por enquanto
+    func loginUser() async -> UserInfo? {
+        guard !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+        guard !senha.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+        
+        do {
+            let user = try await AuthenticationManager.shared.loginUser(withEmail: email, password: senha)
+            print("Sucesso no login!")
+            return user
+        } catch {
+            print("Error logging in: \(error.localizedDescription)")
+            return nil
+        }
+    }
 
     func fazerLogin() {
         // Sem lógica por enquanto

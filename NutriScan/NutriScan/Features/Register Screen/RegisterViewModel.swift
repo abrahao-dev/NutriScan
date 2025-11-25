@@ -7,24 +7,44 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
-// O ViewModel para a tela de Cadastro.
-// Como a tela é apenas UI, ele apenas guarda o estado.
 class RegisterViewModel: ObservableObject {
 
-    // @Published para cada campo do formulário
     @Published var nome = ""
     @Published var email = ""
     @Published var confirmeEmail = ""
     @Published var senha = ""
     @Published var confirmeSenha = ""
     @Published var telefone = ""
-
-    // Funções de lógica vazias
+    
+    func signUp() async -> UserInfo? {
+        guard !nome.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+        guard !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+        guard !confirmeEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+        guard !senha.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+        guard !confirmeSenha.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+        
+        do {
+            let user = try await AuthenticationManager.shared.createUserAccount(
+                withEmail: email,
+                password: senha,
+                name: nome
+            )
+            
+            print("SUCESSO! UID: \(user.uid)")
+            return user
+        } catch {
+            print("Erro no cadastro:", error.localizedDescription)
+            return nil
+        }
+    }
 
     func fazerCadastro() {
-        // Sem lógica por enquanto
-        print("Botão 'Cadastrar' clicado - (Lógica a implementar)")
+        let user = AuthenticationManager.shared.getLoggedInUser()
+        if user != nil {
+            RootView().environmentObject(TabRouter())
+        }
     }
 
     func irParaLogin() {

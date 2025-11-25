@@ -41,6 +41,7 @@ struct LoginView: View {
                         .font(.regular17)
                         .padding(16)
                         .background(Color.primary3)
+                        .border(Color.primary1)
                         .cornerRadius(12)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
@@ -50,6 +51,7 @@ struct LoginView: View {
                         .font(.regular17)
                         .padding(16)
                         .background(Color.primary3)
+                        .border(Color.primary1)
                         .cornerRadius(12)
                         .textContentType(.password)
                 }
@@ -57,7 +59,11 @@ struct LoginView: View {
 
                 // --- Botão de Login ---
                 Button(action: {
-                    viewModel.fazerLogin() // Chama a função do ViewModel
+                    Task {
+                        if let user = await viewModel.loginUser() {
+                            print("Usuário logado com sucesso!")
+                        }
+                    }
                 }) {
                     Text("Login")
                         .font(.semibold17)

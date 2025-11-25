@@ -56,7 +56,9 @@ struct RegisterView: View {
 
                     // --- Botão de Cadastrar ---
                     Button(action: {
-                        viewModel.fazerCadastro() // Chama a função do ViewModel
+                        Task {
+                            let user = await viewModel.signUp()
+                        }
                     }) {
                         Text("Cadastrar")
                             .font(.semibold17)
@@ -105,10 +107,12 @@ struct RegisterView: View {
             TextField("", text: text) // Placeholder vazio
                 .font(.regular17)
                 .padding(16)
-                .background(Color.primary3) // Fundo verde claro
+                .background(Color.primary3)// Fundo verde claro
+                .border(Color.primary1)
                 .cornerRadius(12)
                 .keyboardType(keyboard)
                 .autocapitalization(.none)
+                .autocorrectionDisabled()
         }
     }
 
@@ -123,7 +127,9 @@ struct RegisterView: View {
                 .font(.regular17)
                 .padding(16)
                 .background(Color.primary3) // Fundo verde claro
+                .border(Color.primary1)
                 .cornerRadius(12)
+                .autocorrectionDisabled()
         }
     }
 }
