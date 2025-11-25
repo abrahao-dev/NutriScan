@@ -10,7 +10,6 @@ import Combine
 import SwiftUI
 
 class RegisterViewModel: ObservableObject {
-
     @Published var nome = ""
     @Published var email = ""
     @Published var confirmeEmail = ""
@@ -18,12 +17,17 @@ class RegisterViewModel: ObservableObject {
     @Published var confirmeSenha = ""
     @Published var telefone = ""
     
-    func signUp() async -> UserInfo? {
-        guard !nome.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-        guard !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-        guard !confirmeEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-        guard !senha.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-        guard !confirmeSenha.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+    func signUp() async -> Bool {
+        
+        guard !nome.isEmpty,
+              !email.isEmpty,
+              !confirmeEmail.isEmpty,
+              !senha.isEmpty,
+              !confirmeSenha.isEmpty
+        else {
+            print("Erro: campos vazios.")
+            return false
+        }
         
         do {
             let user = try await AuthenticationManager.shared.createUserAccount(
@@ -31,24 +35,12 @@ class RegisterViewModel: ObservableObject {
                 password: senha,
                 name: nome
             )
+            print("Usuário cadastrado:", user.uid)
+            return true
             
-            print("SUCESSO! UID: \(user.uid)")
-            return user
         } catch {
-            print("Erro no cadastro:", error.localizedDescription)
-            return nil
+            print("Erro no cadastro: \(error)")
+            return false
         }
-    }
-
-    func fazerCadastro() {
-        let user = AuthenticationManager.shared.getLoggedInUser()
-        if user != nil {
-            RootView().environmentObject(TabRouter())
-        }
-    }
-
-    func irParaLogin() {
-        // Sem lógica por enquanto
-        print("Botão 'Faça Login' clicado - (Lógica a implementar)")
     }
 }

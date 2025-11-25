@@ -11,7 +11,7 @@ import SwiftUI
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    let router = TabRouter()
+    let router = AppRouter()
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        let rootView = RegisterView().environmentObject(router)
+        let rootView = AppRootView().environmentObject(router)
         window.rootViewController = UIHostingController(rootView: rootView)
 //        let controller: ViewController = ViewController()
 //        let nav = UINavigationController(rootViewController: controller)

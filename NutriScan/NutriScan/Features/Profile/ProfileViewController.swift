@@ -31,7 +31,7 @@ class ProfileViewController: UIViewController {
         return tableView
     }()
     
-    var router: TabRouter?
+    var router: AppRouter?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,8 +92,10 @@ extension ProfileViewController: UITableViewDelegate {
             navigationController?.popToRootViewController(animated: false)
         case 2:
             guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                  let window = scene.windows.first else { return }
-            let loginView: some View = LoginView()
+                  let window = scene.windows.first,
+                  let router = router else { return }
+            router.screen = .login
+            let loginView: some View = AppRootView().environmentObject(router)
             let controller = UIHostingController(rootView: loginView)
             window.rootViewController = UINavigationController(rootViewController: controller)
             window.makeKeyAndVisible()
@@ -105,7 +107,7 @@ extension ProfileViewController: UITableViewDelegate {
 
 struct ProfileViewControllerWrapper: UIViewControllerRepresentable {
     
-    @EnvironmentObject var router: TabRouter
+    @EnvironmentObject var router: AppRouter
     
     typealias UIViewControllerType = ProfileViewController
     

@@ -8,36 +8,20 @@
 import Foundation
 import Combine
 
-// O ViewModel para a tela de Login.
-// Como a tela é apenas UI, ele apenas guarda o estado.
 class LoginViewModel: ObservableObject {
-
-    // @Published avisa a View para atualizar quando esses valores mudarem
     @Published var email = ""
     @Published var senha = ""
-
-    // Funções de lógica vazias por enquanto
-    func loginUser() async -> UserInfo? {
-        guard !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-        guard !senha.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-        
+    
+    func loginUser() async -> Bool {
         do {
-            let user = try await AuthenticationManager.shared.loginUser(withEmail: email, password: senha)
-            print("Sucesso no login!")
-            return user
+            let _ = try await AuthenticationManager.shared.loginUser(
+                withEmail: email,
+                password: senha
+            )
+            return true
         } catch {
-            print("Error logging in: \(error.localizedDescription)")
-            return nil
+            print("Erro ao logar:", error.localizedDescription)
+            return false
         }
-    }
-
-    func fazerLogin() {
-        // Sem lógica por enquanto
-        print("Botão de Login clicado - (Lógica a implementar)")
-    }
-
-    func irParaCadastro() {
-        // Sem lógica por enquanto
-        print("Botão 'Cadastre-se' clicado - (Lógica a implementar)")
     }
 }

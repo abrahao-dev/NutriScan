@@ -23,7 +23,7 @@ struct OnboardingCarrouselItemView: View {
                     .font(.regular17)
                     .opacity(0.45)
                     .multilineTextAlignment(.center)
-                    .padding(.top, 10)
+                    .padding(.top, 1)
             }
             .padding(.horizontal, 50)
 
