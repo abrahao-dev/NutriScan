@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct RootView: View {
-    @EnvironmentObject var router: TabRouter
+struct MainRootView: View {
+    @EnvironmentObject var router: AppRouter
     
     var body: some View {
         
@@ -33,5 +33,5 @@ struct RootView: View {
 }
 
 #Preview {
-    RootView().environmentObject(TabRouter())
+    MainRootView().environmentObject(AppRouter())
 }

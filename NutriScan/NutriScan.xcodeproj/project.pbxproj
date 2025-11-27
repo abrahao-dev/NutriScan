@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B415FC7D2ED4DDE3003FD528 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B415FC7C2ED4DDE3003FD528 /* FirebaseAuth */; };
+		B415FC7F2ED4DDE3003FD528 /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = B415FC7E2ED4DDE3003FD528 /* FirebaseAuthCombine-Community */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B4443E492E84BAE30041A6B4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B415FC7D2ED4DDE3003FD528 /* FirebaseAuth in Frameworks */,
+				B415FC7F2ED4DDE3003FD528 /* FirebaseAuthCombine-Community in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +132,8 @@
 			);
 			name = NutriScan;
 			packageProductDependencies = (
+				B415FC7C2ED4DDE3003FD528 /* FirebaseAuth */,
+				B415FC7E2ED4DDE3003FD528 /* FirebaseAuthCombine-Community */,
 			);
 			productName = NutriScan;
 			productReference = B4443E322E84BAE00041A6B4 /* NutriScan.app */;
@@ -208,6 +217,9 @@
 			);
 			mainGroup = B4443E292E84BAE00041A6B4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B415FC7B2ED4DDE3003FD528 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B4443E332E84BAE00041A6B4 /* Products */;
 			projectDirPath = "";
@@ -597,6 +609,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B415FC7B2ED4DDE3003FD528 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B415FC7C2ED4DDE3003FD528 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B415FC7B2ED4DDE3003FD528 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		B415FC7E2ED4DDE3003FD528 /* FirebaseAuthCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B415FC7B2ED4DDE3003FD528 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAuthCombine-Community";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B4443E2A2E84BAE00041A6B4 /* Project object */;
 }
