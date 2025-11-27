@@ -12,7 +12,6 @@ class AppRouter: ObservableObject {
     @Published var selectedTab: Tabs = .home
     
     enum Screen {
-//        case onboarding
         case login
         case register
         case home

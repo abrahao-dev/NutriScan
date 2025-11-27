@@ -10,7 +10,6 @@ import SwiftUI
 struct AppRootView: View {
     @StateObject var router = AppRouter()
     @AppStorage("hasSeenOnboarding") var hasSeenOnboarding = false
-    @AppStorage("isLoggedIn") var isLoggedIn = false
     
     var body: some View {
         if !hasSeenOnboarding {

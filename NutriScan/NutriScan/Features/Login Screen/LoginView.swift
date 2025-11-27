@@ -10,7 +10,6 @@ import SwiftUI
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
     @EnvironmentObject var router: AppRouter
-    @AppStorage("isLoggedIn") var isLoggedIn = false
     
     var body: some View {
         ZStack {
@@ -50,7 +49,6 @@ struct LoginView: View {
                 Button {
                     Task {
                         if await viewModel.loginUser() {
-                            isLoggedIn = true
                             withAnimation {
                                 router.screen = .home
                             }
