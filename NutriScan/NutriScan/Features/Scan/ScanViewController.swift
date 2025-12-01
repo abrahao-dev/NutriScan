@@ -10,6 +10,7 @@ import SwiftUI
 import AVFoundation
 
 class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+        var onCodeDetected: ((String) -> Void)?
     
     // AVFoundation para a Câmera
     private var captureSession: AVCaptureSession!
@@ -265,6 +266,20 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         }, completion: nil)
     }
     
+    func pauseScanAnimation() {
+        scanLineView.layer.removeAllAnimations()
+    }
+    
+    func restartScanning() {
+        DispatchQueue.main.async {
+            self.instructionLabel.text = "Aponte para o código de barras do produto"
+        }
+
+        startCameraSession()
+        
+        animateScanLine()
+    }
+    
     // MARK: - AVCaptureMetadataOutputObjectsDelegate
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
@@ -279,16 +294,14 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
             
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             
-            print("Código de barras detectado: \(stringValue)")
+            captureSession.stopRunning()
+            pauseScanAnimation()
             
-            instructionLabel.text = "Código: \(stringValue)"
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                if self.view.window != nil {
-                    self.instructionLabel.text = "Aponte para o código de barras do produto"
-                    self.startCameraSession()
-                }
+            DispatchQueue.main.async {
+                self.instructionLabel.text = "Código: \(stringValue)"
             }
+            
+            self.onCodeDetected?(stringValue)
         } else {
              if !captureSession.isRunning {
                  startCameraSession()
@@ -303,8 +316,22 @@ struct ScanViewControllerWrapper: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = ScanViewController
     
+    @ObservedObject var delegate: ScanDelegate
+    
+    var isLinkActive: Binding<Bool>? = nil
+    
     func makeUIViewController(context: Context) -> ScanViewController {
-        return ScanViewController()
+        let vc = ScanViewController()
+        
+        vc.onCodeDetected = { barcode in
+            delegate.handleBarcode(barcode)
+        }
+        
+        delegate.restartScanAction = {
+            vc.restartScanning()
+        }
+        
+        return vc
     }
     
     func updateUIViewController(_ uiViewController: ScanViewController, context: Context) {

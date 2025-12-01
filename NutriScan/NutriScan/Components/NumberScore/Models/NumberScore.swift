@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-enum NumberScore: CaseIterable {
-    case scoreA
-    case scoreB
-    case scoreC
-    case scoreD
-    case scoreE
+enum NumberScore: String, CaseIterable, Hashable {
+    case scoreA = "A"
+    case scoreB = "B"
+    case scoreC = "C"
+    case scoreD = "D"
+    case scoreE = "E"
 }
 
 extension NumberScore {

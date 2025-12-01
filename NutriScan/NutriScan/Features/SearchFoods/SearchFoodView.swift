@@ -12,24 +12,40 @@ struct SearchFoodView: View {
     @State private var selectedItem: FoodInformation?
     
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(viewModel.filteredProducts) { foodInfo in
-                    Button {
-                        selectedItem = foodInfo
-                    } label: {
-                        FoodInformationItemView(foodInformation: foodInfo)
-                    }
+        List {
+            ForEach(viewModel.filteredProducts) { foodInfo in
+                Button {
+                    selectedItem = foodInfo
+                } label: {
+                    FoodInformationItemView(foodInformation: foodInfo)
                 }
             }
-            .listStyle(.plain)
-            .navigationTitle("Busca")
-            .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $viewModel.searchText, prompt: viewModel.prompt)
+            
+            if viewModel.filteredProducts.isEmpty &&
+                !viewModel.searchText.isEmpty &&
+                !viewModel.isLoading {
+                EmptyStateComponentView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(.systemBackground))
+            }
         }
+        .listStyle(.plain)
         .sheet(item: $selectedItem) { item in
             DetailsView(foodInfo: item)
         }
+        .overlay(
+            Group {
+                if viewModel.isLoading {
+                    ProgressView("Buscando produtos...")
+                        .padding()
+                        .background(Color.secondary.opacity(0.6))
+                        .cornerRadius(10)
+                }
+            }
+        )
+        .navigationTitle("Busca")
+        .navigationBarTitleDisplayMode(.inline)
+        .searchable(text: $viewModel.searchText, prompt: viewModel.prompt)
     }
 }
 

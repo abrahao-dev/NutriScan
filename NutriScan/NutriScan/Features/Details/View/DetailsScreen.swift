@@ -15,6 +15,8 @@ class DetailsScreen: UIView {
     private let productImageView: UIImageView = {
         let imageView = UIImageView(image: .onboarding1)
         imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -94,11 +96,16 @@ class DetailsScreen: UIView {
             addSubview($0)
         }
         
+        let imageSize: CGFloat = 180
+        let margin: CGFloat = 100
+        
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 50),
             productImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            productImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 100),
-            productImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -100),
+            productImageView.heightAnchor.constraint(equalToConstant: imageSize),
+            productImageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: margin),
+            productImageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -margin),
+            productImageView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.8),
 
             titleLabel.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 40),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),
@@ -110,7 +117,7 @@ class DetailsScreen: UIView {
             
             scoreImageView.topAnchor.constraint(equalTo: brandLabel.bottomAnchor, constant: 50),
             scoreImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            scoreImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+//            scoreImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             scoreImageView.heightAnchor.constraint(equalToConstant: 80),
             
             infoStack.topAnchor.constraint(equalTo: scoreImageView.bottomAnchor, constant: 20),

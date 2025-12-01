@@ -12,20 +12,18 @@ struct FavoriteView: View {
     @State private var selectedItem: FoodInformation?
     
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(viewModel.allFoods) { foodInfo in
-                    Button {
-                        selectedItem = foodInfo
-                    } label: {
-                        FoodInformationItemView(foodInformation: foodInfo)
-                    }
+        List {
+            ForEach(viewModel.allFoods) { foodInfo in
+                Button {
+                    selectedItem = foodInfo
+                } label: {
+                    FoodInformationItemView(foodInformation: foodInfo)
                 }
             }
-            .listStyle(.plain)
-            .navigationTitle("Favoritos")
-            .navigationBarTitleDisplayMode(.inline)
         }
+        .listStyle(.plain)
+        .navigationTitle("Favoritos")
+        .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $selectedItem) { item in
             DetailsView(foodInfo: item)
         }

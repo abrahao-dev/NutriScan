@@ -9,6 +9,9 @@ import SwiftUI
 struct SelectSecondProductView: View {
     @ObservedObject var viewModel: CompareFoodsViewModel
     
+    @State private var isScanLinkActive = false
+    @State private var isSearchLinkActive = false
+    
     var body: some View {
         VStack(spacing: 30) {
             Text("Selecione o segundo produto")
@@ -20,30 +23,46 @@ struct SelectSecondProductView: View {
             
             FoodInformationItemView(foodInformation: viewModel.productOne)
                 .padding()
-                .background(Color(.systemGray6))
+                .background(Color(.alertColor3).opacity(0.1))
                 .cornerRadius(12)
                 .padding(.horizontal)
             
             Spacer()
             
-            NavigationLink(destination: ScanSecondProductView(compareViewModel: viewModel)) {
+            NavigationLink(
+                destination: ScanView(
+                    onProductFound: { product in
+                        viewModel.setProductForComparison(product)
+                    },
+                    onNavigationCompleted: {
+                        isScanLinkActive = false
+                    },
+                    productOne: viewModel.productOne
+                ),
+                isActive: $isScanLinkActive
+            ) {
                 Label("Escanear Produto", systemImage: "barcode.viewfinder")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.accentColor)
+                    .background(Color.alertColor3)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
             .padding(.horizontal)
             
-            NavigationLink(destination: SearchSecondProductView(compareViewModel: viewModel)) {
+            NavigationLink(
+                destination: SearchSecondProductView(
+                    compareViewModel: viewModel,
+                    isLinkActive: $isSearchLinkActive
+                )
+            ) {
                 Label("Buscar Produto", systemImage: "magnifyingglass")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .foregroundColor(.accentColor)
+                    .background(Color.primaryColor3)
+                    .foregroundColor(.white)
                     .cornerRadius(10)
             }
             .padding(.horizontal)
@@ -59,6 +78,8 @@ struct SearchSecondProductView: View {
     
     @ObservedObject var compareViewModel: CompareFoodsViewModel
     
+    @Binding var isLinkActive: Bool
+    
     var body: some View {
         VStack(spacing: 0) {
             
@@ -67,6 +88,7 @@ struct SearchSecondProductView: View {
             List(searchViewModel.filteredProducts) { foodInfo in
                 Button(action: {
                     compareViewModel.setProductForComparison(foodInfo)
+                    self.isLinkActive = false
                 }) {
                     FoodInformationItemView(foodInformation: foodInfo)
                         .foregroundColor(.primary)
@@ -74,6 +96,16 @@ struct SearchSecondProductView: View {
                 .listRowInsets(EdgeInsets())
             }
             .listStyle(.plain)
+            .overlay(
+                Group {
+                    if searchViewModel.isLoading {
+                        ProgressView("Buscando produtos...")
+                            .padding()
+                            .background(Color.secondary.opacity(0.6))
+                            .cornerRadius(10)
+                    }
+                }
+            )
         }
         .navigationTitle("Buscar Produto")
         .navigationBarTitleDisplayMode(.inline)
@@ -107,30 +139,5 @@ struct ProductSummaryCard: View {
         .padding()
         .frame(maxWidth: .infinity)
         .background(Color(.systemGray5))
-    }
-}
-
-struct ScanSecondProductView: View {
-    
-    @ObservedObject var compareViewModel: CompareFoodsViewModel
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            
-            ProductSummaryCard(product: compareViewModel.productOne)
-            Spacer()
-            
-            Text("ScannerView")
-            Spacer()
-            
-            Button("Simular Scan (Oreo)") {
-                let oreo = FoodInformation(name: "Bolacha Recheada", brand: "Oreo", imageUrl: URL(string: "https://placehold.co/60?text=Bolacha")!, score: .scoreE)
-                
-                compareViewModel.setProductForComparison(oreo)
-            }
-            .padding()
-        }
-        .navigationTitle("Escanear Produto")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
