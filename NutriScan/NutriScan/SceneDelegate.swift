@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -20,11 +21,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
+
+        // Verifica se existe um usuário logado
+        if Auth.auth().currentUser != nil {
+            // Usuário está logado, navega para a tela principal
+            router.screen = .home
+        } else {
+            // Usuário não está logado, navega para a tela de login
+            router.screen = .login
+        }
+
         let rootView = AppRootView().environmentObject(router)
         window.rootViewController = UIHostingController(rootView: rootView)
-//        let controller: ViewController = ViewController()
-//        let nav = UINavigationController(rootViewController: controller)
-//        window.rootViewController = nav
         window.makeKeyAndVisible()
         self.window = window
     }
