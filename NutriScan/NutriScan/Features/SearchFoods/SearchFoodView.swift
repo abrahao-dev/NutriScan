@@ -45,7 +45,7 @@ struct SearchFoodView: View {
         )
         .navigationTitle("Busca")
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $viewModel.searchText, prompt: viewModel.prompt)
+        .searchable(text: $viewModel.searchText, prompt: viewModel.prompt, placement: .navigationBarDrawer(displayMode: .always))
     }
 }
 

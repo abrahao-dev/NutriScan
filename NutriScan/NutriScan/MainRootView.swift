@@ -13,12 +13,13 @@ struct MainRootView: View {
     var body: some View {
         
         NavigationView {
-            VStack {
+            VStack(spacing: 0) {
                 switch router.selectedTab {
                 case .home:
                     HomeRootView()
                 case .search:
                     SearchFoodView()
+                        .ignoresSafeArea(edges: .bottom)
                 case .scan:
                     ScanRootView()
                 case .favorites:
@@ -28,7 +29,9 @@ struct MainRootView: View {
                 }
                 CustomTabBarView(selectedTab: $router.selectedTab)
             }
+            .ignoresSafeArea(.keyboard)
         }
+        .navigationViewStyle(.stack)
     }
 }
 
