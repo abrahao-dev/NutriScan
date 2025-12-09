@@ -7,16 +7,40 @@
 
 import Foundation
 import Combine
+import FirebaseAuth
 
 // O ViewModel para a tela de Editar Perfil.
-// Apenas guarda o estado dos campos.
+// Carrega os dados do usuário autenticado
 class EditProfileViewModel: ObservableObject {
 
     // @Published para cada campo do formulário
-    // Desta vez, iniciamos com dados de exemplo (como no design)
-    @Published var nome = "Katherine Pierce"
-    @Published var email = "katherine.pierce@icloud.com"
-    @Published var telefone = "(11) 99899-9877"
+    @Published var nome = ""
+    @Published var email = ""
+    @Published var telefone = ""
+
+    init() {
+        loadUserData()
+    }
+
+    private func loadUserData() {
+        guard let currentUser = Auth.auth().currentUser else {
+            return
+        }
+
+        // Carrega os dados do usuário autenticado
+        if let displayName = currentUser.displayName, !displayName.isEmpty {
+            self.nome = displayName
+        } else if let userEmail = currentUser.email {
+            // Se não houver displayName, usa o email como fallback
+            self.nome = userEmail
+        } else {
+            self.nome = "Usuário"
+        }
+
+        self.email = currentUser.email ?? ""
+        // Telefone não está disponível no Firebase Auth, mantém vazio
+        self.telefone = ""
+    }
 
     // Funções de lógica vazias
 
