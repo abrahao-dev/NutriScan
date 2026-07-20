@@ -12,13 +12,15 @@ class SearchFoodsViewModel: ObservableObject {
     @Published var filteredProducts: [FoodInformation] = []
     @Published var searchText = ""
     @Published var isLoading = false
-    
-    private var service = OpenFoodFactsService()
+    @Published var errorMessage: String?
+
+    private let service: ProductServiceProtocol
     private var cancellables = Set<AnyCancellable>()
-    
+
     let prompt: String = "Digite o nome ou marca"
-    
-    init() {
+
+    init(service: ProductServiceProtocol = OpenFoodFactsService()) {
+        self.service = service
         $searchText
             .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
             .removeDuplicates()
@@ -40,9 +42,10 @@ class SearchFoodsViewModel: ObservableObject {
     
     func fetchInitialProducts() {
             let defaultQuery = ""
-            
+
             self.isLoading = true
-            
+            self.errorMessage = nil
+
             service.searchProducts(query: defaultQuery) { [weak self] result in
                 DispatchQueue.main.async {
                     self?.isLoading = false
@@ -52,29 +55,32 @@ class SearchFoodsViewModel: ObservableObject {
                     case .failure(let error):
                         print("Erro ao carregar produtos iniciais: \(error.localizedDescription)")
                         self?.filteredProducts = []
+                        self?.errorMessage = "Não foi possível carregar os produtos. Verifique sua conexão."
                     }
                 }
             }
         }
-    
+
     func search(query: String) {
         guard !query.isEmpty else {
             self.filteredProducts = []
             return
         }
-        
+
         self.isLoading = true
-        
+        self.errorMessage = nil
+
         service.searchProducts(query: query) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
-                
+
                 switch result {
                 case .success(let products):
                     self?.filteredProducts = products
                 case .failure(let error):
                     print("Erro ao buscar API: \(error.localizedDescription)")
                     self?.filteredProducts = []
+                    self?.errorMessage = "Não foi possível buscar \"\(query)\". Verifique sua conexão."
                 }
             }
         }
