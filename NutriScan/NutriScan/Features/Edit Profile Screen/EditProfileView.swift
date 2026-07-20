@@ -72,6 +72,15 @@ struct EditProfileView: View {
             }
             .padding()
         }
+        .alert(
+            viewModel.feedbackMessage ?? "",
+            isPresented: Binding(
+                get: { viewModel.feedbackMessage != nil },
+                set: { if !$0 { viewModel.feedbackMessage = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) {}
+        }
     }
 
     // --- ViewBuilder para criar os campos de texto (reutilizado) ---
