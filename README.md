@@ -1,78 +1,80 @@
 # 📱 NutriScan
 
-> Escaneie um alimento e entenda em segundos se ele faz bem pra você.
+**English** | [Português (BR)](./README.pt-BR.md)
 
-App iOS que lê o **código de barras** de um produto (ou busca por nome), consulta a base aberta **[Open Food Facts](https://world.openfoodfacts.org/)** e traduz a tabela nutricional em informação visual: **Nutri-Score (A–E)**, destaques como *"Bom para o coração"* ou *"Alto em gordura saturada"*, e **comparação de dois produtos lado a lado**.
+> Scan a food product and understand in seconds whether it's good for you.
 
-Projeto final do **Bootcamp Mobile iOS — MasterCode Academy** (2025/2026), desenvolvido em equipe durante o curso e **finalizado neste fork**.
+iOS app that reads a product's **barcode** (or searches by name), queries the open **[Open Food Facts](https://world.openfoodfacts.org/)** database and translates the nutrition label into visual, actionable information: **Nutri-Score (A–E)**, highlights like *"Good for your heart"* or *"High in saturated fat"*, and a **side-by-side comparison of two products**.
+
+Final project of the **iOS Mobile Bootcamp — MasterCode Academy** (2025/2026), built as a team during the course and **completed in this fork**.
 
 ---
 
-## ✨ Funcionalidades
+## ✨ Features
 
-- 📷 **Scan de código de barras** com a câmera (AVFoundation) + digitação manual como fallback
-- 🔍 **Busca por nome ou marca** com debounce e estados de erro/vazio
-- 📊 **Detalhes do produto** com Nutri-Score e destaques nutricionais calculados dos dados reais da API (gordura, gordura saturada, proteínas e fibras por 100g)
-- ⚖️ **Comparação** de dois produtos lado a lado (segundo produto via scan ou busca)
-- ❤️ **Favoritos persistidos** localmente (UserDefaults + JSON), com swipe para remover
-- 🕓 **"Salvos Recentemente"** na Home — últimos 10 produtos visualizados
-- 🔐 **Login/Cadastro** com Firebase Auth, edição de perfil e redefinição de senha por e-mail
-- 🧅 **Onboarding** na primeira execução
+- 📷 **Barcode scanning** with the camera (AVFoundation) + manual entry as fallback
+- 🔍 **Search by name or brand** with debounce, error and empty states
+- 📊 **Product details** with Nutri-Score and nutrition highlights computed from real API data (fat, saturated fat, protein and fiber per 100g)
+- ⚖️ **Compare** two products side by side (second product via scan or search)
+- ❤️ **Favorites persisted** locally (UserDefaults + JSON), with swipe to delete
+- 🕓 **"Recently Viewed"** on Home — last 10 products opened
+- 🔐 **Sign up / Login** with Firebase Auth, profile editing and password reset via e-mail
+- 🧅 **Onboarding** on first launch
 
-## 🏛️ Arquitetura e tecnologias
+## 🏛️ Architecture & tech stack
 
-**MVVM** com **UIKit (ViewCode) + SwiftUI** interoperando — telas UIKit hospedam componentes SwiftUI (`UIHostingController`) e vice-versa (`UIViewControllerRepresentable`), refletindo codebases híbridas do mercado.
+**MVVM** with **UIKit (programmatic ViewCode) + SwiftUI** interoperating — UIKit screens host SwiftUI components (`UIHostingController`) and vice versa (`UIViewControllerRepresentable`), mirroring real-world hybrid codebases.
 
-| Camada | Tecnologia |
-|--------|-----------|
+| Layer | Technology |
+|-------|-----------|
 | UI | UIKit ViewCode + SwiftUI |
-| Estado/binding | Combine (`ObservableObject`, `@Published`) |
-| Rede | URLSession + camada de serviço com **DI via protocolo** (`ProductServiceProtocol`) |
-| Persistência | UserDefaults + JSON (`Codable`) — `ProductStore` |
+| State/binding | Combine (`ObservableObject`, `@Published`) |
+| Networking | URLSession + service layer with **protocol-based DI** (`ProductServiceProtocol`) |
+| Persistence | UserDefaults + JSON (`Codable`) — `ProductStore` |
 | Auth | Firebase Auth |
-| Câmera | AVFoundation |
-| Testes | Swift Testing (`#expect`), Given/When/Then, mocks por protocolo |
+| Camera | AVFoundation |
+| Tests | Swift Testing (`#expect`), Given/When/Then, protocol-based mocks |
 
-Detalhes completos (requisitos, regras de negócio, fluxo de navegação, decisões de design): **[DOCUMENTACAO.md](./NutriScan/DOCUMENTACAO.md)**
+Full documentation (requirements, business rules, navigation flow, design decisions — in Portuguese): **[DOCUMENTACAO.md](./NutriScan/DOCUMENTACAO.md)**
 
-## 🚀 Como rodar
+## 🚀 Getting started
 
-1. Clone o repositório e abra `NutriScan/NutriScan.xcodeproj` no **Xcode 16+**
-2. Aguarde o SPM resolver as dependências (Firebase iOS SDK)
-3. Rode no simulador (`⌘R`) — o scan de barcode exige aparelho físico; no simulador use **"Digitar"** na tela de Scan
-4. Testes: `⌘U` (13 testes unitários + UI tests)
+1. Clone the repo and open `NutriScan/NutriScan.xcodeproj` in **Xcode 16+**
+2. Wait for SPM to resolve dependencies (Firebase iOS SDK)
+3. Run on the simulator (`⌘R`) — barcode scanning requires a physical device; on the simulator use **"Digitar"** (type manually) on the Scan screen
+4. Tests: `⌘U` (13 unit tests + UI tests)
 
-> `GoogleService-Info.plist` do projeto Firebase da equipe já está incluído.
+> The team's Firebase `GoogleService-Info.plist` is already included.
 
-## 🧪 Testes
+## 🧪 Tests
 
 ```
-FoodInformationTests        — regras de negócio dos destaques nutricionais
-ProductStoreTests           — persistência, toggle de favoritos, dedupe/limite de recentes
-OpenFoodFactsServiceTests   — mapeamento API → modelo interno, chaves do JSON real
-SearchFoodsViewModelTests   — ViewModel com service mockado (DI via protocolo)
+FoodInformationTests        — business rules for nutrition highlights
+ProductStoreTests           — persistence, favorite toggling, recents dedupe/limit
+OpenFoodFactsServiceTests   — API → domain model mapping, real JSON keys
+SearchFoodsViewModelTests   — ViewModel with mocked service (protocol DI)
 ```
 
-## 🔗 Links do projeto
+## 🔗 Project links
 
-| Recurso | Link |
-|---------|------|
-| 🎨 Design final (Figma) | [NutriScan App](https://www.figma.com/design/oEfbZ58pzE6HgwBap20CUH/NutriScan-App?node-id=0-1) |
-| 🎨 UI Kit de referência (Figma Community) | [Nutrition App UI](https://www.figma.com/design/95HYnqqA0MoqmwN7ObWfqo/Nutrition-App-UI--Community-) |
-| 📋 Board ágil (Trello) | [Sprint Board](https://trello.com/b/mc9AmW9S/trello-agile-sprint-board-template) |
-| 📝 Documento do projeto (Notion) | [Nutri-Scan](https://app.notion.com/p/Nutri-Scan-26391ed2afc280d5a6e1de19967de4f4) |
+| Resource | Link |
+|----------|------|
+| 🎨 Final design (Figma) | [NutriScan App](https://www.figma.com/design/oEfbZ58pzE6HgwBap20CUH/NutriScan-App?node-id=0-1) |
+| 🎨 Reference UI kit (Figma Community) | [Nutrition App UI](https://www.figma.com/design/95HYnqqA0MoqmwN7ObWfqo/Nutrition-App-UI--Community-) |
+| 📋 Agile board (Trello) | [Sprint Board](https://trello.com/b/mc9AmW9S/trello-agile-sprint-board-template) |
+| 📝 Project doc (Notion) | [Nutri-Scan](https://app.notion.com/p/Nutri-Scan-26391ed2afc280d5a6e1de19967de4f4) |
 | 🌐 API | [Open Food Facts](https://world.openfoodfacts.org/) |
-| 🍴 Repositório original da equipe | [elenadiniz/NutriScan](https://github.com/elenadiniz/NutriScan) |
+| 🍴 Original team repository | [elenadiniz/NutriScan](https://github.com/elenadiniz/NutriScan) |
 
-## 👥 Equipe
+## 👥 Team
 
-Desenvolvido durante o bootcamp por [@elenadiniz](https://github.com/elenadiniz), [@raphaelavidal](https://github.com/raphaelavidal), [@MateusAndreatta](https://github.com/MateusAndreatta), [@abrahao-dev](https://github.com/abrahao-dev) e [@EderJrDev](https://github.com/EderJrDev).
+Built during the bootcamp by [@elenadiniz](https://github.com/elenadiniz), [@raphaelavidal](https://github.com/raphaelavidal), [@MateusAndreatta](https://github.com/MateusAndreatta), [@abrahao-dev](https://github.com/abrahao-dev) and [@EderJrDev](https://github.com/EderJrDev).
 
-**Finalização** (dados nutricionais reais, persistência de favoritos/recentes, entrada manual de barcode, perfil funcional, testes e documentação): [@abrahao-dev](https://github.com/abrahao-dev).
+**Completion work** (real nutrition data, favorites/recents persistence, manual barcode entry, working profile, tests and documentation): [@abrahao-dev](https://github.com/abrahao-dev).
 
-## 📜 Padrão de commits
+## 📜 Commit convention
 
-**Conventional Commits em português**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.
+**Conventional Commits in Portuguese**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.
 
 ```
 feat: adiciona tela de login com e-mail e senha
