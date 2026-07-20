@@ -10,7 +10,10 @@ import UIKit
 import SwiftUI
 
 class ManualBarcodeViewController: UIViewController {
-    
+
+    /// Chamado quando o usuário confirma um código digitado válido.
+    var onConfirm: ((String) -> Void)?
+
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -82,7 +85,15 @@ class ManualBarcodeViewController: UIViewController {
     
     @objc func confirmAction() {
         dismissKeyboard() // Dispensa o teclado
-        print("Código confirmado: \(textField.text ?? "vazio")")    }
+
+        guard let code = textField.text?.trimmingCharacters(in: .whitespaces),
+              !code.isEmpty else {
+            textField.layer.borderColor = UIColor.systemRed.cgColor
+            return
+        }
+
+        onConfirm?(code)
+    }
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
@@ -121,14 +132,19 @@ class ManualBarcodeViewController: UIViewController {
 }
 
 struct ManualBarcodeEntryView: UIViewControllerRepresentable {
-    
+
     typealias UIViewControllerType = ManualBarcodeViewController
-    
+
+    var onConfirm: (String) -> Void = { _ in }
+
     func makeUIViewController(context: Context) -> ManualBarcodeViewController {
-        return ManualBarcodeViewController()
+        let controller = ManualBarcodeViewController()
+        controller.onConfirm = onConfirm
+        return controller
     }
-    
+
     func updateUIViewController(_ uiViewController: ManualBarcodeViewController, context: Context) {
+        uiViewController.onConfirm = onConfirm
     }
 }
 

@@ -43,7 +43,11 @@ struct ScanView: View {
             }
             
             NavigationLink(
-                destination: ManualBarcodeEntryView(),
+                destination: ManualBarcodeEntryView { code in
+                    // Fecha a tela de digitação e busca o produto na API
+                    isManualEntryActive = false
+                    delegate.handleBarcode(code)
+                },
                 isActive: $isManualEntryActive
             ) { EmptyView() }.hidden()
     
