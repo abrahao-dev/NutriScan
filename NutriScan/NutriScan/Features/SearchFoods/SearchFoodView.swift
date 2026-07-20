@@ -21,7 +21,24 @@ struct SearchFoodView: View {
                 }
             }
             
-            if viewModel.filteredProducts.isEmpty &&
+            if let errorMessage = viewModel.errorMessage {
+                VStack(spacing: 8) {
+                    Image(systemName: "wifi.exclamationmark")
+                        .font(.title)
+                        .foregroundColor(.secondary)
+                    Text(errorMessage)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                    Button("Tentar novamente") {
+                        viewModel.searchText.isEmpty
+                            ? viewModel.fetchInitialProducts()
+                            : viewModel.search(query: viewModel.searchText)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 40)
+            } else if viewModel.filteredProducts.isEmpty &&
                 !viewModel.searchText.isEmpty &&
                 !viewModel.isLoading {
                 EmptyStateComponentView()
@@ -45,7 +62,7 @@ struct SearchFoodView: View {
         )
         .navigationTitle("Busca")
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $viewModel.searchText, prompt: viewModel.prompt, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: viewModel.prompt)
     }
 }
 

@@ -34,7 +34,7 @@ struct NutrimentsAPI: Decodable, Sendable {
     
     enum CodingKeys: String, CodingKey {
         case fat_100g
-        case saturated_fat_100g
+        case saturated_fat_100g = "saturated-fat_100g"
         case proteins_100g
         case fiber_100g
     }
