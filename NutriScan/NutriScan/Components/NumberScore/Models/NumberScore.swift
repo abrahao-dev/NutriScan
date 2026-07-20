@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum NumberScore: String, CaseIterable, Hashable {
+enum NumberScore: String, CaseIterable, Hashable, Codable {
     case scoreA = "A"
     case scoreB = "B"
     case scoreC = "C"

@@ -16,21 +16,24 @@ class DetailsViewController: UIViewController {
     
     private var foodInfo: FoodInformation
     private var infoItems: [InfoItem]
-    
-    init(foodInfo: FoodInformation, infoItem: [InfoItem]) {
+    private let store = ProductStore.shared
+
+    init(foodInfo: FoodInformation, infoItem: [InfoItem]? = nil) {
         self.foodInfo = foodInfo
-        self.infoItems = infoItem
+        // Sem itens explícitos, gera a partir dos nutrientes reais da API
+        self.infoItems = infoItem ?? foodInfo.makeInfoItems()
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
         configure()
+        store.addRecent(foodInfo)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,6 +79,13 @@ extension DetailsViewController {
         contentView.onCompareButtonTapped = { [weak self] in
             self?.presentCompareScreen()
         }
+
+        contentView.setFavorite(store.isFavorite(foodInfo))
+        contentView.onFavoriteButtonTapped = { [weak self] in
+            guard let self else { return }
+            let isFavorite = self.store.toggleFavorite(self.foodInfo)
+            self.contentView.setFavorite(isFavorite)
+        }
     }
     
     private func presentCompareScreen() {
@@ -102,16 +112,8 @@ struct DetailsViewControllerWrapper: UIViewControllerRepresentable {
     let foodInfo: FoodInformation
     
     func makeUIViewController(context: Context) -> DetailsViewController {
-        
-        return DetailsViewController(
-            foodInfo: foodInfo,
-            infoItem: [
-                .init(icon: .system(name: .heart), foregroundColor: .icon2,  title: "Bom para o coração", subtitle: "Baixo em gordura: 2,80g", backgroundColor: .iconBackground),
-                .init(icon: .asset(name: .muscleArm), foregroundColor: nil, title: "Construção de Ossos e Músculos", subtitle: "Alto em proteínas: 14g", backgroundColor: .secondary3),
-                .init(icon: .asset(name: .intestine), foregroundColor: nil, title: "Auxilia no funcionamento do intestino", subtitle: "Rico em fibras: 10g", backgroundColor: .secondary1),
-                .init(icon: .system(name: .checkmark), foregroundColor: .icon1, title: "Lactose", subtitle: "Zero em lactose", backgroundColor: .primary1)
-            ]
-        )
+        // InfoItems gerados dinamicamente a partir dos nutrientes do produto
+        return DetailsViewController(foodInfo: foodInfo)
     }
     
     func updateUIViewController(_ uiViewController: DetailsViewController, context: Context) {

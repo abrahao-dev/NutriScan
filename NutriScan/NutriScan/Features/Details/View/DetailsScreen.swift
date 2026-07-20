@@ -11,6 +11,7 @@ import SwiftUI
 class DetailsScreen: UIView {
 
     var onCompareButtonTapped: (() -> Void)?
+    var onFavoriteButtonTapped: (() -> Void)?
     
     private let productImageView: UIImageView = {
         let imageView = UIImageView(image: .onboarding1)
@@ -77,11 +78,25 @@ class DetailsScreen: UIView {
         setButtonConfiguration(button: compareButton, title: "Comparar Produto")
         
         compareButton.addTarget(self, action: #selector(handleCompareTap), for: .touchUpInside)
+        favoriteButton.addTarget(self, action: #selector(handleFavoriteTap), for: .touchUpInside)
     }
-    
+
     @objc private func handleCompareTap() {
         // 4. CHAME O CALLBACK
         onCompareButtonTapped?()
+    }
+
+    @objc private func handleFavoriteTap() {
+        onFavoriteButtonTapped?()
+    }
+
+    /// Atualiza o visual do botão de favorito conforme o estado atual.
+    func setFavorite(_ isFavorite: Bool) {
+        setButtonConfiguration(
+            button: favoriteButton,
+            title: isFavorite ? "Remover dos Favoritos" : "Salvar nos Favoritos",
+            image: UIImage(systemName: isFavorite ? "heart.fill" : "heart")
+        )
     }
     
     required init? (coder: NSCoder) {
