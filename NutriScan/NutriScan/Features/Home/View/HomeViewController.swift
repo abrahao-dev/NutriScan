@@ -37,7 +37,17 @@ class HomeViewController: UIViewController {
 
     private var recentItemsCollectionView: UICollectionView!
 
-    private var recentProducts: [Product] = MockData.recentProducts
+    private let emptyRecentsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Nenhum produto visto ainda.\nEscaneie ou busque um alimento!"
+        label.font = .systemFont(ofSize: 15)
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private var recentProducts: [FoodInformation] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +57,23 @@ class HomeViewController: UIViewController {
         setup()
         setupLayout()
         configureUserGreeting()
+        reloadRecents()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reloadRecents),
+            name: .productStoreDidChange,
+            object: nil
+        )
+    }
+
+    @objc private func reloadRecents() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.recentProducts = ProductStore.shared.recents
+            self.emptyRecentsLabel.isHidden = !self.recentProducts.isEmpty
+            self.recentItemsCollectionView.reloadData()
+        }
     }
 
     private func configureUserGreeting() {
@@ -76,6 +103,7 @@ class HomeViewController: UIViewController {
         view.addSubview(saveRecentLabel)
 
         view.addSubview(recentItemsCollectionView)
+        view.addSubview(emptyRecentsLabel)
     }
 
     private func setupCollectionView() {
@@ -90,6 +118,7 @@ class HomeViewController: UIViewController {
         recentItemsCollectionView.showsHorizontalScrollIndicator = false
 
         recentItemsCollectionView.dataSource = self
+        recentItemsCollectionView.delegate = self
 
         recentItemsCollectionView.register(RecentItemCell.self, forCellWithReuseIdentifier: RecentItemCell.reuseIdentifier)
     }
@@ -114,7 +143,11 @@ class HomeViewController: UIViewController {
             recentItemsCollectionView.topAnchor.constraint(equalTo: saveRecentLabel.bottomAnchor, constant: 20),
             recentItemsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16), // Padding
             recentItemsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            recentItemsCollectionView.heightAnchor.constraint(equalToConstant: 260) // Altura da célula
+            recentItemsCollectionView.heightAnchor.constraint(equalToConstant: 260), // Altura da célula
+
+            emptyRecentsLabel.topAnchor.constraint(equalTo: saveRecentLabel.bottomAnchor, constant: 20),
+            emptyRecentsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            emptyRecentsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
     }
 }
@@ -140,6 +173,15 @@ extension HomeViewController: UICollectionViewDataSource {
         cell.configure(with: product)
 
         return cell
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let product = recentProducts[indexPath.item]
+        let detailsController = UIHostingController(rootView: DetailsView(foodInfo: product))
+        present(detailsController, animated: true)
     }
 }
 

@@ -79,12 +79,22 @@ class RecentItemCell: UICollectionViewCell {
         ])
     }
     
-    func configure(with product: Product) {
+    private var imageTask: URLSessionDataTask?
+
+    func configure(with product: FoodInformation) {
         nameLabel.text = product.name
         brandLabel.text = product.brand
-        
-        productImageView.image = UIImage(systemName: product.imageName)
-        
+
+        imageTask?.cancel()
+        productImageView.image = UIImage(systemName: "photo")
+        imageTask = URLSession.shared.dataTask(with: product.imageUrl) { [weak self] data, _, _ in
+            guard let data, let image = UIImage(data: data) else { return }
+            DispatchQueue.main.async {
+                self?.productImageView.image = image
+            }
+        }
+        imageTask?.resume()
+
         if let hostingController = hostingController {
             hostingController.view.removeFromSuperview()
             hostingController.removeFromParent()
